@@ -65,18 +65,22 @@ model VerificationToken {
     @@unique([identifier, token])
 }
 
-model Card {
-    cardId   String @unique
-    question String
-    answer   String
+model FlashCard {
+    cardId     String @unique
+    question   String
+    answer     String
+    difficulty Int
 
     Collection             Collection? @relation(fields: [collectionCollectionId], references: [collectionId])
     collectionCollectionId String?
 }
 
 model Collection {
-    collectionId String @unique
+    collectionId String      @unique
     name         String
-    deck         Card[]
-    difficulty   Int
+    deck         FlashCard[]
+    category     String?
+    attempts     Int
+    accuracy     Int
+    best         Int
 }
