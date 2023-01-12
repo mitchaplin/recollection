@@ -71,16 +71,17 @@ model FlashCard {
     answer     String
     difficulty Int
 
-    Collection             Collection? @relation(fields: [collectionCollectionId], references: [collectionId])
-    collectionCollectionId String?
+    //     Collection             Collection? @relation(fields: [collectionCollectionId], references: [collectionId])
+    //     collectionCollectionId String?
+    // 
 }
 
 model Collection {
-    collectionId String      @unique
+    collectionId String @unique
     name         String
-    deck         FlashCard[]
-    category     String?
-    attempts     Int
-    accuracy     Int
-    best         Int
+    // deck         FlashCard[]
+    // category     String?
+    // attempts     Int
+    // accuracy     Int
+    // best         Int
 }
