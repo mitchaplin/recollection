@@ -11,8 +11,14 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center gap-8 bg-gradient-to-b from-[#2e026d] to-[#15162c]">
-        <h1 className="text-white">Welcome to Recollection</h1>
-        <Link href={"/create-collection"}>Create a new Collection!</Link>
+        <Link href={"/collections/create-collection"}>
+          <button
+            type="button"
+            className="mb-2 rounded-lg bg-brand-orange px-5 py-2.5 text-sm font-medium text-white hover:bg-brand-purple focus:outline-none focus:ring-4 focus:ring-purple-300"
+          >
+            Create a new Collection!
+          </button>
+        </Link>
       </main>
     </>
   );

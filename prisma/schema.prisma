@@ -79,6 +79,7 @@ model FlashCard {
 model Collection {
     collectionId String @unique
     name         String
+    // image        String?
     // deck         FlashCard[]
     // category     String?
     // attempts     Int

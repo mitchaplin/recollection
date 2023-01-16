@@ -1,70 +1,71 @@
 /** @type {import('tailwindcss').Config} */
-const colors = require("tailwindcss/colors");
 
 module.exports = {
+  darkMode: "media",
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       colors: {
-        gray: {
-          ...colors.zinc,
-          750: "#333338",
-          850: "#202023",
-          950: "#0C0C0E",
+        primary: {
+          50: "#eff6ff",
+          100: "#dbeafe",
+          200: "#bfdbfe",
+          300: "#93c5fd",
+          400: "#60a5fa",
+          500: "#3b82f6",
+          600: "#2563eb",
+          700: "#1d4ed8",
+          800: "#1e40af",
+          900: "#1e3a8a",
         },
-        pink: {
-          50: "#FEE6F0",
-          100: "#FDCDE1",
-          200: "#F1A5C6",
-          300: "#ED8AB5",
-          400: "#E96EA4",
-          500: "#E24A8D",
-          600: "#DB1D70",
-          700: "#C01A62",
-          800: "#A41654",
-          900: "#6E0F38",
-        },
-        rose: colors.rose,
-      },
-      keyframes: {
-        "fade-in": {
-          "0%": {
-            opacity: "0",
-          },
-          "100%": {
-            opacity: "1",
-          },
-        },
-        "fade-in-delay": {
-          "0%": {
-            opacity: "0",
-          },
-          "50%": {
-            opacity: "0",
-          },
-          "100%": {
-            opacity: "1",
-          },
-        },
-        "fade-in-down": {
-          "0%": {
-            opacity: "0",
-            transform: "translateY(-10px)",
-          },
-          "100%": {
-            opacity: "1",
-            transform: "translateY(0)",
-          },
+        brand: {
+          dark: "#41436A",
+          purple: "#984063",
+          pink: "#F64668",
+          orange: "#FE9677",
         },
       },
-      animation: {
-        "fade-in-down": "fade-in-down 0.5s ease-out",
-        "fade-in": "fade-in 0.2s ease-out",
-        "fade-in-delay": "fade-in-delay 1s ease-out",
-      },
-      backgroundSize: {
-        landing: "120rem",
-      },
+    },
+    fontFamily: {
+      body: [
+        "Inter",
+        "ui-sans-serif",
+        "system-ui",
+        "-apple-system",
+        "system-ui",
+        "Segoe UI",
+        "Roboto",
+        "Helvetica Neue",
+        "Arial",
+        "Noto Sans",
+        "sans-serif",
+        "Apple Color Emoji",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol",
+        "Noto Color Emoji",
+      ],
+      sans: [
+        "Inter",
+        "ui-sans-serif",
+        "system-ui",
+        "-apple-system",
+        "system-ui",
+        "Segoe UI",
+        "Roboto",
+        "Helvetica Neue",
+        "Arial",
+        "Noto Sans",
+        "sans-serif",
+        "Apple Color Emoji",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol",
+        "Noto Color Emoji",
+      ],
+    },
+    animation: {
+      "fade-in-down": "fade-in-down 0.5s ease-out",
+      "fade-in": "fade-in 0.2s ease-out",
+      "fade-in-delay": "fade-in-delay 1s ease-out",
     },
   },
   plugins: [
