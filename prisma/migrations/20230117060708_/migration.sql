@@ -54,18 +54,24 @@ CREATE TABLE "VerificationToken" (
 );
 
 -- CreateTable
-CREATE TABLE "Card" (
-    "cardId" TEXT NOT NULL,
+CREATE TABLE "FlashCard" (
+    "id" SERIAL NOT NULL,
     "question" TEXT NOT NULL,
     "answer" TEXT NOT NULL,
-    "collectionCollectionId" TEXT
+    "difficulty" INTEGER NOT NULL DEFAULT 5,
+
+    CONSTRAINT "FlashCard_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Collection" (
-    "collectionId" TEXT NOT NULL,
+    "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "difficulty" INTEGER NOT NULL
+    "author" TEXT NOT NULL DEFAULT 'Anonymous',
+    "description" TEXT,
+    "difficulty" INTEGER NOT NULL DEFAULT 5,
+
+    CONSTRAINT "Collection_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -84,16 +90,10 @@ CREATE UNIQUE INDEX "VerificationToken_token_key" ON "VerificationToken"("token"
 CREATE UNIQUE INDEX "VerificationToken_identifier_token_key" ON "VerificationToken"("identifier", "token");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Card_cardId_key" ON "Card"("cardId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Collection_collectionId_key" ON "Collection"("collectionId");
+CREATE UNIQUE INDEX "Collection_id_key" ON "Collection"("id");
 
 -- AddForeignKey
 ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Card" ADD CONSTRAINT "Card_collectionCollectionId_fkey" FOREIGN KEY ("collectionCollectionId") REFERENCES "Collection"("collectionId") ON DELETE SET NULL ON UPDATE CASCADE;
