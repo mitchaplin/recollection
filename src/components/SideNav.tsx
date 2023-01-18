@@ -24,7 +24,7 @@ export const SideNav: NextPage = () => {
             Recollection
           </h1>
         </div>
-        <hr className=" dark:border-gray-700" />
+        {/* <hr className=" dark:border-gray-700" /> */}
         <ul className="space-y-2 pt-4 font-heading">
           <li>
             <Link
@@ -32,7 +32,7 @@ export const SideNav: NextPage = () => {
               className={
                 currentRoute === "/"
                   ? `flex items-center rounded-l border-r-4 border-r-brand-subtleBlue bg-gray-700 p-2 text-base text-brand-offWhite transition-all hover:bg-gray-700`
-                  : `flex items-center rounded p-2 text-base  text-brand-offWhite transition-all hover:bg-gray-700`
+                  : `flex items-center rounded-l p-2 text-base  text-brand-offWhite transition-all hover:bg-gray-700`
               }
             >
               <svg
@@ -54,7 +54,7 @@ export const SideNav: NextPage = () => {
               className={
                 currentRoute.includes("/collections")
                   ? `flex items-center rounded-l  border-r-4 border-r-brand-subtleBlue bg-gray-700 p-2 text-base text-brand-offWhite  transition-all hover:bg-gray-700`
-                  : `flex items-center rounded p-2 text-base text-brand-offWhite   transition-all hover:bg-gray-700`
+                  : `flex items-center rounded-l p-2 text-base text-brand-offWhite   transition-all hover:bg-gray-700`
               }
             >
               <svg

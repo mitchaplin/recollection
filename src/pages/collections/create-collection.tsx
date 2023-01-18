@@ -4,7 +4,7 @@ import React, { useState } from "react";
 
 import { api } from "../../utils/api";
 
-const Home: NextPage = () => {
+const CreateCollection: NextPage = () => {
   const createCollection = api.collectionsRouter.createCollection.useMutation();
   const router = useRouter();
   const [name, setName] = useState<string>("");
@@ -153,4 +153,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default CreateCollection;
