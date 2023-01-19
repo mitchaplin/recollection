@@ -24,6 +24,27 @@ export const collectionsRouter = createTRPCRouter({
     return collections;
   }),
   
+  delete: publicProcedure
+		.input(
+			z.object({
+				id: z.string(),
+			})
+		)
+		.mutation(async ({ input, ctx }) => {
+			const { id } = await ctx.prisma.collection.findFirstOrThrow({
+				where: {
+					id: input.id,
+				},
+			})
+			const deleteCollection = await ctx.prisma.collection.delete({
+				where: {
+					id: input.id,
+				},
+			})
+
+			return deleteCollection
+		}),
+
   getCollectionCardCount: publicProcedure.input(
     z.object({
         collectionId: z.string(),
