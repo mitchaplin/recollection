@@ -15,7 +15,7 @@ export const Dashboard: NextPage = () => {
   const appleIcon = (
     <Image src="/apple.png" alt="score" width="70" height="70" />
   );
-  const collections = api.collectionsRouter.getCollections.useQuery();
+  const collections = api.collectionsRouter.getCollections.useQuery({});
   const stats = [
     {
       name: "Total Collections",
@@ -48,8 +48,10 @@ export const Dashboard: NextPage = () => {
                     : "hover:cursor-default"
                 }`}
                 key={item.name}
-                onClick={
-                  item.name === "Total Collections" ? routeToCollections : null
+                onClick={(e) =>
+                  item.name === "Total Collections"
+                    ? void routeToCollections(e)
+                    : null
                 }
               >
                 <div className="flex items-center justify-center">
@@ -96,7 +98,7 @@ export const Dashboard: NextPage = () => {
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    fill-rule="evenodd"
+                    fillRule="evenodd"
                     d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
                     clip-rule="evenodd"
                   ></path>

@@ -2,22 +2,48 @@ import { type NextPage } from "next";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 
-import { api } from "../../utils/api";
+import { api } from "../../../utils/api";
 
-const CreateCollection: NextPage = () => {
-  const createCollection = api.collectionsRouter.createCollection.useMutation();
+const EditCollection: NextPage = () => {
   const router = useRouter();
-  const [name, setName] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [difficulty, setDifficulty] = useState<number>(5);
-  const [author, setAuthor] = useState<string>("You");
-  const [category, setCategory] = useState<string>("Other");
+  const { query } = useRouter();
+
+  const {
+    data: collection,
+    isFetching,
+    error,
+  } = api.collectionsRouter.getCollection.useQuery(
+    {
+      id: query.id as string,
+    },
+    {
+      enabled: Boolean(query.id),
+      refetchOnMount: true,
+    }
+  );
+
+  const updateCollection = api.collectionsRouter.updateCollection.useMutation();
+
+  const [name, setName] = useState<string>(collection?.name as string);
+  const [description, setDescription] = useState<string>(
+    collection?.description as string
+  );
+  const [difficulty, setDifficulty] = useState<number>(
+    collection?.difficulty as number
+  );
+  const [author, setAuthor] = useState<string>(collection?.author as string);
+  const [category, setCategory] = useState<string>(
+    collection?.category as string
+  );
   // const [deck, setDeck] = useState<string>("");
 
-  const handleCreateCollection = async (e: React.FormEvent) => {
+  const displayName = collection?.name as string;
+
+  const handleUpdateCollection = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log(e);
-    await createCollection.mutateAsync({
+    await updateCollection.mutateAsync({
+      id: query.id as string,
       name,
       description,
       author,
@@ -30,14 +56,19 @@ const CreateCollection: NextPage = () => {
 
   return (
     <main className="flex h-screen w-screen flex-grow justify-center overflow-y-auto p-8">
-      <section className="bg-brand bg-darkGray grow gap-8">
+      <section className="bg-brand-darkGray grow gap-8">
         <div className="mx-auto py-8 px-4 lg:py-16">
           <h1 className="font mx-52 mb-10 text-center font-heading text-3xl font-bold text-brand-offWhite">
-            Add Your New Collection
+            Edit Collection
           </h1>
+          <span className="flex justify-center text-center">
+            <h1 className="font mb-8 hidden truncate text-ellipsis text-center font-heading text-xl font-bold italic text-brand-offWhite md:mx-52 md:block md:max-w-sm">
+              {displayName}
+            </h1>
+          </span>
           <form
-            onSubmit={(e) => void handleCreateCollection(e)}
-            className={"mx-36 flex grow flex-col gap-6"}
+            onSubmit={(e) => void handleUpdateCollection(e)}
+            className={"mx-36 flex flex-col gap-6"}
           >
             <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
               <div className="sm:col-span-2">
@@ -136,10 +167,10 @@ const CreateCollection: NextPage = () => {
             </div>
             <div className="flex justify-center gap-10">
               <button className="bg-brand-dark mt-4 rounded-lg bg-brand-actionBlue px-5 py-2.5 text-sm font-medium text-brand-offWhite hover:bg-brand-subtleBlue focus:outline-brand-lightBlue">
-                Add Flash Cards
+                Update Flash Cards
               </button>
               <button className="bg-brand-dark mt-4 rounded-lg bg-brand-actionBlue px-5 py-2.5 text-sm font-medium text-brand-offWhite hover:bg-brand-subtleBlue focus:outline-brand-lightBlue">
-                Create Collection
+                Edit Collection
               </button>
             </div>
           </form>
@@ -149,4 +180,4 @@ const CreateCollection: NextPage = () => {
   );
 };
 
-export default CreateCollection;
+export default EditCollection;

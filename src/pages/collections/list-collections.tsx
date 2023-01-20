@@ -8,10 +8,11 @@ import type { Collection } from "@prisma/client";
 import { type NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { CategoryBadge } from "../../components/CategoryBadge";
+import LoadingSpinner from "../../components/LoadingIcon";
 import { DeleteCollectionModal } from "../../components/utils/deleteCollectionModal";
-import LoadingSpinner from "../../components/utils/LoadingIcon";
 import { api } from "../../utils/api";
 
 const Collections: NextPage = () => {
@@ -21,6 +22,8 @@ const Collections: NextPage = () => {
     id: "",
     name: "",
   });
+
+  const router = useRouter();
 
   function useDebounce<T>(value: T, delay?: number): T {
     const [debouncedValue, setDebouncedValue] = useState<T>(value);
@@ -50,7 +53,7 @@ const Collections: NextPage = () => {
             <form className="flex w-96">
               <label
                 htmlFor="default-search"
-                className="sr-only mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="sr-only mb-2 font-body text-sm font-medium text-brand-offWhite"
               >
                 Search
               </label>
@@ -68,7 +71,6 @@ const Collections: NextPage = () => {
                   onChange={(e) => setSearchState(e.target.value)}
                   className="block w-full rounded-lg border  border-gray-600 bg-gray-700 p-2.5  pl-10 text-sm text-brand-offWhite placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500"
                   placeholder="Search Collections"
-                  required
                 />
               </div>
             </form>
@@ -111,22 +113,33 @@ const Collections: NextPage = () => {
             return (
               <div
                 key={collection.id}
-                className="mb-6 flex animate-fade-in transition-all"
+                onClick={() =>
+                  void router.push(
+                    `/collections/edit-collection/${collection.id}`
+                  )
+                }
+                className="mb-6 flex transform transition duration-500 ease-in-out hover:-translate-y-1 hover:scale-105"
               >
                 <div
                   key={collection.id}
                   className="flex w-[24rem] grow flex-col rounded-lg bg-gray-800 shadow-xl hover:shadow-2xl"
                 >
                   <div className="flex justify-between gap-4">
-                    <span onClick={(e) => setSearchState(collection.category)}>
+                    <span onClick={() => setSearchState(collection.category)}>
                       <CategoryBadge categoryName={collection.category} />
                     </span>
                     <div className="flex gap-2 p-4">
                       <button
-                        // onClick={() => editCollection(collection.id)}
+                        onClick={() =>
+                          void router.push(
+                            `/collections/edit-collection/${collection.id}`
+                          )
+                        }
                         className="flex items-center rounded-lg bg-none px-3 py-2 text-center text-sm font-medium text-brand-offWhite hover:bg-brand-subtleBlue  focus:outline-brand-lightBlue"
                       >
-                        <Link href={`/collection/${collection.id}/edit`}></Link>
+                        <Link
+                          href={`/collections/edit-collection/${collection.id}`}
+                        ></Link>
                         <PencilIcon className="h-5 w-5 text-brand-offWhite" />
                       </button>
                       <button
@@ -153,13 +166,13 @@ const Collections: NextPage = () => {
 
                   <div className="flex flex-grow flex-col p-8">
                     <div className="flex grow flex-col gap-4">
-                      <h5 className="text-2xl font-bold tracking-tight text-brand-offWhite">
+                      <h5 className="truncate text-2xl font-bold tracking-tight text-brand-offWhite">
                         {collection.name}
                       </h5>
-                      <h1 className="overflow-hidden text-ellipsis text-xl font-normal text-brand-offWhite">
+                      <h1 className="overflow-hidden truncate text-xl font-normal text-brand-offWhite">
                         {collection.description}
                       </h1>
-                      <p className="text-md font-light tracking-tight text-brand-offWhite">
+                      <p className="text-md truncate font-light tracking-tight text-brand-offWhite">
                         Author: {collection.author}
                       </p>
                     </div>

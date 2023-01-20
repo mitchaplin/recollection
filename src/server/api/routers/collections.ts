@@ -3,22 +3,44 @@ import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
+function capitalizeFirstLetter(s: string) {
+  return s[0]!.toUpperCase() + s.slice(1);
+}
+
 export const collectionsRouter = createTRPCRouter({
   createCollection: publicProcedure
-    .input(z.object({ name: z.string(), description: z.string(), author: z.string(), category: z.string() }))
+    .input(z.object({ name: z.string(), description: z.string(), author: z.string(), category: z.string(), difficulty: z.number() }))
     .mutation(async ({ input, ctx }) => {
-    const collectionId = randomUUID();
+    const id = randomUUID();
     const collection = await ctx.prisma.collection.create({
         data: {
-            id: collectionId,
+            id: id,
             name: input.name,
             description: input.description,
             author: input.author,
             category: input.category,     
+            difficulty: input.difficulty,
         }
     });
     return collection
 }),
+
+updateCollection: publicProcedure
+.input(z.object({ name: z.string(), description: z.string(), author: z.string(), category: z.string(), id: z.string(), difficulty: z.number() }))
+.mutation(async ({ input, ctx }) => {
+const collection = await ctx.prisma.collection.update({
+  where : { id: input.id },
+    data: {
+        name: input.name,
+        description: input.description,
+        author: input.author,
+        category: input.category,     
+        difficulty: input.difficulty,     
+    }
+});
+return collection
+}),
+
   getCollections: publicProcedure.input(z.object({
     searchText: z.string().optional(),
   })).query(async ({ input , ctx }) => {
@@ -29,13 +51,21 @@ export const collectionsRouter = createTRPCRouter({
           { name: { contains: input.searchText }}, 
           { description: { contains: input.searchText }}, 
           { author: { contains: input.searchText }}, 
-          { category: { contains: input.searchText }}]}})
+          { category: { contains: capitalizeFirstLetter(input.searchText) }}]}})
     } else { 
       collections = await ctx.prisma.collection.findMany(); 
     }
     return collections;
   }),
   
+  getCollection: publicProcedure.input(z.object({
+    id: z.string(),
+  })).query(async ({ input , ctx }) => {
+      const collections = await ctx.prisma.collection.findFirstOrThrow(
+        { where: { id: input.id }})
+    return collections;
+  }),
+
   delete: publicProcedure
 		.input(
 			z.object({
