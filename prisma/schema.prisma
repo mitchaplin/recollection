@@ -75,15 +75,14 @@ model FlashCard {
 }
 
 model Collection {
-    id          String  @id @unique @default(cuid())
+    id          String @id @unique @default(cuid())
     name        String
-    author      String  @default("Anonymous")
-    description String?
-    difficulty  Int     @default(5)
+    author      String @default("You")
+    description String @default("No description")
+    category    String @default("Other")
     // deck        FlashCard[]
 
     // image        String?
-    // category     String?
     // attempts     Int
     // accuracy     Int
     // best         Int

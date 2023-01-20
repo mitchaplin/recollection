@@ -5,7 +5,7 @@ import { createTRPCRouter, publicProcedure } from "../trpc";
 
 export const collectionsRouter = createTRPCRouter({
   createCollection: publicProcedure
-    .input(z.object({ name: z.string(), description: z.string(), author: z.string(), difficulty: z.number()  }))
+    .input(z.object({ name: z.string(), description: z.string(), author: z.string(), category: z.string() }))
     .mutation(async ({ input, ctx }) => {
     const collectionId = randomUUID();
     const collection = await ctx.prisma.collection.create({
@@ -14,13 +14,25 @@ export const collectionsRouter = createTRPCRouter({
             name: input.name,
             description: input.description,
             author: input.author,
-            difficulty: input.difficulty,     
+            category: input.category,     
         }
     });
     return collection
 }),
-  getCollections: publicProcedure.query(async ({ ctx }) => {
-    const collections = await ctx.prisma.collection.findMany();
+  getCollections: publicProcedure.input(z.object({
+    searchText: z.string().optional(),
+  })).query(async ({ input , ctx }) => {
+    let collections;
+    if (!!input.searchText) { 
+      collections = await ctx.prisma.collection.findMany(
+        { where: { OR: [
+          { name: { contains: input.searchText }}, 
+          { description: { contains: input.searchText }}, 
+          { author: { contains: input.searchText }}, 
+          { category: { contains: input.searchText }}]}})
+    } else { 
+      collections = await ctx.prisma.collection.findMany(); 
+    }
     return collections;
   }),
   

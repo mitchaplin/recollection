@@ -11,7 +11,8 @@ const CreateCollection: NextPage = () => {
   const [description, setDescription] = useState<string>("");
   const [difficulty, setDifficulty] = useState<number>(5);
   const [author, setAuthor] = useState<string>("You");
-  // const [deck, setDeck] = useState<string>("");
+  const [category, setCategory] = useState<string>("Other");
+  const [deck, setDeck] = useState<string>("");
 
   const handleCreateCollection = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,8 +20,8 @@ const CreateCollection: NextPage = () => {
     await createCollection.mutateAsync({
       name,
       description,
-      difficulty,
       author,
+      category,
       // deck,
     });
     await router.push("/collections/list-collections");
@@ -68,17 +69,19 @@ const CreateCollection: NextPage = () => {
                     </label>
                     <select
                       id="category"
+                      value={category}
+                      onChange={(e) => setCategory(e.target.value)}
                       defaultValue={"other"}
                       className="dark:focus:border-primary-500 dark:focus:ring-primary-500 block w-full rounded-lg border border-gray-600 bg-gray-700 p-2.5 text-sm text-brand-offWhite placeholder-gray-400 focus:border-brand-subtleBlue"
                     >
                       <option>Select category</option>
-                      <option value="math">Mathematics</option>
-                      <option value="bio">Biology</option>
-                      <option value="chem">Chemsitry</option>
-                      <option value="his">History</option>
-                      <option value="phys">Physics</option>
-                      <option value="eng">Engineering</option>
-                      <option value="other">Other</option>
+                      <option value="Math">Mathematics</option>
+                      <option value="Biology">Biology</option>
+                      <option value="Chemsitry">Chemsitry</option>
+                      <option value="History">History</option>
+                      <option value="Physics">Physics</option>
+                      <option value="Engineering">Engineering</option>
+                      <option value="Other">Other</option>
                     </select>
                   </div>
                   <div>
