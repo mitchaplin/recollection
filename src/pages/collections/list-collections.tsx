@@ -14,7 +14,6 @@ import { CategoryBadge } from "../../components/CategoryBadge";
 import LoadingSpinner from "../../components/LoadingIcon";
 import { DeleteCollectionModal } from "../../components/utils/deleteCollectionModal";
 import { api } from "../../utils/api";
-
 const Collections: NextPage = () => {
   const [searchState, setSearchState] = useState("");
   const [modalState, setModalState] = useState({
@@ -38,7 +37,6 @@ const Collections: NextPage = () => {
 
     return debouncedValue;
   }
-
   const debouncedSearchTerm = useDebounce(searchState, 500);
 
   const collections = api.collectionsRouter.getCollections.useQuery({
@@ -118,7 +116,7 @@ const Collections: NextPage = () => {
                     `/collections/edit-collection/${collection.id}`
                   )
                 }
-                className="mb-6 flex transform transition duration-500 ease-in-out hover:-translate-y-1 hover:scale-105"
+                className="duration-250 mb-6 flex transform transition ease-in-out hover:-translate-y-1 hover:scale-105"
               >
                 <div
                   key={collection.id}
@@ -143,14 +141,16 @@ const Collections: NextPage = () => {
                         <PencilIcon className="h-5 w-5 text-brand-offWhite" />
                       </button>
                       <button
-                        onClick={() =>
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
                           setModalState({
                             open: true,
                             id: collection.id,
                             name: collection.name,
-                          })
-                        }
-                        className="inline-flex items-center rounded-lg bg-none px-3 py-2 text-center text-sm font-medium text-brand-offWhite hover:bg-red-800 focus:outline-brand-lightBlue"
+                          });
+                        }}
+                        className="z-10 inline-flex items-center rounded-lg bg-none px-3 py-2 text-center text-sm font-medium text-brand-offWhite hover:bg-red-800 focus:outline-brand-lightBlue"
                       >
                         <TrashIcon className="h-5 w-5 text-brand-offWhite" />
                       </button>
@@ -176,7 +176,7 @@ const Collections: NextPage = () => {
                         Author: {collection.author}
                       </p>
                     </div>
-                    <button className="mt-6 flex justify-center rounded-lg bg-brand-actionBlue px-3 py-2 text-center text-sm font-medium text-brand-offWhite hover:bg-brand-subtleBlue  focus:outline-brand-lightBlue ">
+                    <button className="mt-6 flex justify-center rounded-lg bg-brand-actionBlue px-3 py-2 text-center text-sm font-medium text-brand-offWhite hover:bg-brand-subtleBlue  focus:outline-brand-lightBlue">
                       <Link
                         href={`/collection/${collection.id}/study`}
                         className="inline-flex items-center rounded-lg px-3 py-2 text-center text-sm font-medium text-brand-offWhite focus:outline-none"

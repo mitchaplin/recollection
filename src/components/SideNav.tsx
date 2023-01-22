@@ -1,17 +1,19 @@
+import { ArrowLongLeftIcon } from "@heroicons/react/24/solid";
 import { type NextPage } from "next";
+import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 export const SideNav: NextPage = () => {
   const router = useRouter();
   const currentRoute = router.pathname;
-
+  const session = useSession();
   return (
     <aside
       className="shadow-inner-2xl h-screen min-w-[16rem] border-r border-gray-700"
       aria-label="Sidebar"
     >
-      <div className="min-w-72 h-full overflow-y-auto bg-brand-gray px-3 py-4 ">
+      <div className="min-w-72 flex h-full flex-col overflow-y-auto bg-brand-gray px-3 py-4">
         <div className="mr-4 flex items-center justify-center">
           <Image
             src="/logo.png"
@@ -92,27 +94,42 @@ export const SideNav: NextPage = () => {
               </span>
             </a>
           </li>
-          <li>
-            <Link
-              href="#"
-              className="flex items-center rounded-lg p-2 text-base  text-brand-offWhite hover:bg-gray-700"
+          {session?.data?.user?.id && (
+            <li
+              className=""
+              onClick={() =>
+                void router.push(
+                  `/collections/edit-collection/${
+                    session.data?.user?.id as string
+                  }`
+                )
+              }
             >
-              <svg
-                aria-hidden="true"
-                className="h-6 w-6 text-brand-offWhite transition duration-75 group-hover:text-brand-offWhite"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
+              <Link
+                href={`/user/${session.data?.user?.id}`}
+                className={
+                  currentRoute.includes("user")
+                    ? `flex items-center rounded-l  border-r-4 border-r-brand-subtleBlue bg-gray-700 p-2 text-base text-brand-offWhite  transition-all hover:bg-gray-700`
+                    : `flex items-center rounded-l p-2 text-base text-brand-offWhite   transition-all hover:bg-gray-700`
+                }
               >
-                <path
-                  fillRule="evenodd"
-                  d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                  clipRule="evenodd"
-                ></path>
-              </svg>
-              <span className="ml-3 flex-1 whitespace-nowrap">Profile</span>
-            </Link>
-          </li>
+                <svg
+                  aria-hidden="true"
+                  className="h-6 w-6 text-brand-offWhite transition duration-75 group-hover:text-brand-offWhite"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                    clipRule="evenodd"
+                  ></path>
+                </svg>
+                <span className="ml-3 flex-1 whitespace-nowrap">Profile</span>
+              </Link>
+            </li>
+          )}
           <li>
             <a
               href="#"
@@ -137,51 +154,7 @@ export const SideNav: NextPage = () => {
               </span>
             </a>
           </li>
-          <li>
-            <a
-              href="#"
-              className="flex items-center rounded-lg p-2 text-base  text-brand-offWhite hover:bg-gray-700"
-            >
-              <svg
-                aria-hidden="true"
-                className="h-6 w-6 text-brand-offWhite transition duration-75 group-hover:text-brand-offWhite"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z"
-                  clipRule="evenodd"
-                ></path>
-              </svg>
-              <span className="ml-3 flex-1 whitespace-nowrap">Sign In</span>
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="flex items-center rounded-lg p-2 text-base  text-brand-offWhite hover:bg-gray-700"
-            >
-              <svg
-                aria-hidden="true"
-                className="h-6 w-6 text-brand-offWhite transition duration-75 group-hover:text-brand-offWhite"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M5 4a3 3 0 00-3 3v6a3 3 0 003 3h10a3 3 0 003-3V7a3 3 0 00-3-3H5zm-1 9v-1h5v2H5a1 1 0 01-1-1zm7 1h4a1 1 0 001-1v-1h-5v2zm0-4h5V8h-5v2zM9 8H4v2h5V8z"
-                  clipRule="evenodd"
-                ></path>
-              </svg>
-              <span className="ml-3 flex-1 whitespace-nowrap">Sign Up</span>
-            </a>
-          </li>
-        </ul>
-        <ul className="mt-4 justify-end space-y-2 border-t border-gray-200 pt-4 font-heading dark:border-gray-700">
-          <li>
+          <li className="pb-2">
             <a
               href="#"
               className="flex items-center rounded-lg p-2 text-base text-brand-offWhite hover:bg-gray-700"
@@ -201,10 +174,64 @@ export const SideNav: NextPage = () => {
                   d="M378.7 32H133.3L256 182.7L378.7 32zM512 192l-107.4-141.3L289.6 192H512zM107.4 50.67L0 192h222.4L107.4 50.67zM244.3 474.9C247.3 478.2 251.6 480 256 480s8.653-1.828 11.67-5.062L510.6 224H1.365L244.3 474.9z"
                 ></path>
               </svg>
-              <span className="ml-4">Upgrade to Pro</span>
+              <span className="ml-3 flex-1 whitespace-nowrap">
+                Recollection Pro
+              </span>
             </a>
           </li>
         </ul>
+        <ul className="gap-4 space-y-2 border-t border-gray-200 pt-4 font-heading dark:border-gray-700">
+          {session && session.data?.user ? (
+            <div className="flex flex-col gap-4">
+              <li>
+                <div
+                  className="flex items-center rounded-lg p-2 text-base  text-brand-offWhite hover:bg-gray-700"
+                  onClick={() => void signOut()}
+                >
+                  <ArrowLongLeftIcon className="h-6 w-6 text-brand-offWhite transition duration-75 group-hover:text-brand-offWhite" />
+                  <span className="ml-3 flex justify-end whitespace-nowrap text-center">
+                    Sign Out
+                  </span>
+                </div>
+              </li>
+            </div>
+          ) : (
+            <div className="flex flex-col">
+              <button
+                className="flex flex-col items-center justify-center rounded-lg bg-none p-4 text-sm font-medium text-brand-offWhite hover:bg-gray-700  focus:outline-brand-lightBlue"
+                onClick={() => void signIn()}
+              >
+                <Image
+                  src={"/discord-logo-blue.svg"}
+                  alt="Discord"
+                  width={150}
+                  height={200}
+                ></Image>
+              </button>
+            </div>
+          )}
+        </ul>
+        {session?.data?.user?.image && (
+          <div className="mt-auto">
+            <div
+              className="flex flex-row justify-evenly gap-2 rounded-md bg-brand-gray p-2 text-left hover:bg-gray-700"
+              // onClick={(e) => router.push(`/users/${id}`)}
+            >
+              <Image
+                width={150}
+                height={150}
+                src={`${session?.data?.user?.image}`}
+                className="w-12 rounded-full"
+                alt="Avatar"
+              />
+              <div className="flex items-center">
+                <h5 className="font-xs text-md font-body text-brand-offWhite">
+                  {session.data.user.email}
+                </h5>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </aside>
   );

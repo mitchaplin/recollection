@@ -1,12 +1,14 @@
 import { BookOpenIcon, RectangleGroupIcon } from "@heroicons/react/24/solid";
 import { type NextPage } from "next";
+import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import React from "react";
 import { api } from "../utils/api";
 
 export const Dashboard: NextPage = () => {
   const router = useRouter();
-
+  const session = useSession();
   const routeToCollections = async (e: React.FormEvent) => {
     e.preventDefault();
     await router.push("/collections/list-collections");
@@ -20,14 +22,12 @@ export const Dashboard: NextPage = () => {
     {
       name: "Total Collections",
       stat: collections.data?.length,
-      image: (
-        <RectangleGroupIcon className="ml-3 h-16 w-16 text-brand-offWhite" />
-      ),
+      image: <RectangleGroupIcon className="h-16 w-16 text-brand-offWhite" />,
     },
     {
       name: "Study Sessions",
       stat: "14",
-      image: <BookOpenIcon className="ml-3 h-16 w-16 text-brand-offWhite" />,
+      image: <BookOpenIcon className="h-16 w-16 text-brand-offWhite" />,
     },
     {
       name: "Apples Earned",
@@ -35,6 +35,36 @@ export const Dashboard: NextPage = () => {
       image: appleIcon,
     },
   ];
+  console.log(session);
+  if (!session.data)
+    return (
+      <main className="h-screen w-screen overflow-y-auto">
+        <div
+          className="mx-auto flex cursor-pointer flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0"
+          onClick={() => void signIn()}
+        >
+          <a
+            href="#"
+            className="mb-6 flex items-center text-2xl font-semibold text-gray-900 dark:text-white"
+          >
+            <Image
+              width={250}
+              height={250}
+              className="mr-2"
+              src="/discord-logo-blue.png"
+              alt="logo"
+            />
+          </a>
+          <div className="w-full rounded-lg bg-white shadow dark:border dark:border-gray-700 dark:bg-gray-800 sm:max-w-md md:mt-0 xl:p-0">
+            <div className="space-y-4 p-6 sm:p-8 md:space-y-6">
+              <h1 className="text-center text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl">
+                Please Sign In
+              </h1>
+            </div>
+          </div>
+        </div>
+      </main>
+    );
   return (
     <main className="h-screen w-screen overflow-y-auto p-8">
       <div className="grid grid-cols-4">
@@ -42,7 +72,7 @@ export const Dashboard: NextPage = () => {
           <dl className="mt-5 grid w-screen min-w-fit grid-cols-1 gap-5 rounded-lg xl:grid-cols-3">
             {stats.map((item) => (
               <div
-                className={`grid grid-cols-2 overflow-hidden rounded-lg bg-gray-800 ${
+                className={`grid grid-cols-2 items-center justify-items-center overflow-hidden rounded-lg bg-gray-800 ${
                   item.name === "Total Collections"
                     ? "hover:cursor-pointer"
                     : "hover:cursor-default"
@@ -54,17 +84,15 @@ export const Dashboard: NextPage = () => {
                     : null
                 }
               >
-                <div className="flex items-center justify-center">
-                  {item.image}
-                </div>
-                <div className="flex w-28 items-center justify-center">
-                  <div key={item.name} className=" px-4 py-5 text-left sm:p-6">
-                    <dt className="truncate text-left font-heading text-sm font-medium text-brand-cream">
+                <div className="m-0 flex items-center">{item.image}</div>
+                <div className="inline-flex w-28">
+                  <div key={item.name} className="py-5 px-4 text-right sm:p-6">
+                    <div className="truncate font-heading text-sm font-medium text-brand-cream">
                       {item.name}
-                    </dt>
-                    <dd className="mt-1 flex flex-auto items-start text-left font-body text-3xl font-semibold tracking-tight text-brand-cream">
+                    </div>
+                    <div className="mt-1 flex flex-auto items-start text-left font-body text-3xl font-semibold tracking-tight text-brand-cream">
                       {item.stat}
-                    </dd>
+                    </div>
                   </div>
                 </div>
               </div>

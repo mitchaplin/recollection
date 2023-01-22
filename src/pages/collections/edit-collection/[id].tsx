@@ -1,6 +1,7 @@
 import { type NextPage } from "next";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import LoadingSpinner from "../../../components/LoadingIcon";
 
 import { api } from "../../../utils/api";
 
@@ -11,12 +12,21 @@ const EditCollection: NextPage = () => {
   const {
     data: collection,
     isFetching,
+    isLoading,
     error,
   } = api.collectionsRouter.getCollection.useQuery(
     {
       id: query.id as string,
     },
+
     {
+      onSuccess: (response) => {
+        setDescription(response.description);
+        setDifficulty(response.difficulty);
+        setAuthor(response.author);
+        setCategory(response.category);
+        setName(response.name);
+      },
       enabled: Boolean(query.id),
       refetchOnMount: true,
     }
@@ -36,12 +46,11 @@ const EditCollection: NextPage = () => {
     collection?.category as string
   );
   // const [deck, setDeck] = useState<string>("");
-
+  const contextUtil = api.useContext();
   const displayName = collection?.name as string;
 
   const handleUpdateCollection = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(e);
     await updateCollection.mutateAsync({
       id: query.id as string,
       name,
@@ -51,8 +60,16 @@ const EditCollection: NextPage = () => {
       difficulty,
       // deck,
     });
+    await contextUtil.invalidate();
     await router.push("/collections/list-collections");
   };
+
+  if (isLoading || isFetching)
+    return (
+      <div>
+        <LoadingSpinner />
+      </div>
+    );
 
   return (
     <main className="flex h-screen w-screen flex-grow justify-center overflow-y-auto p-8">
@@ -62,7 +79,7 @@ const EditCollection: NextPage = () => {
             Edit Collection
           </h1>
           <span className="flex justify-center text-center">
-            <h1 className="font mb-8 hidden truncate text-ellipsis text-center font-heading text-xl font-bold italic text-brand-offWhite md:mx-52 md:block md:max-w-sm">
+            <h1 className="font mb-8 hidden truncate pr-1 text-center font-heading text-xl font-bold italic text-brand-offWhite md:mx-52 md:block md:max-w-sm">
               {displayName}
             </h1>
           </span>

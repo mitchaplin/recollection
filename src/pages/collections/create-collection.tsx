@@ -13,7 +13,7 @@ const CreateCollection: NextPage = () => {
   const [author, setAuthor] = useState<string>("You");
   const [category, setCategory] = useState<string>("Other");
   // const [deck, setDeck] = useState<string>("");
-
+  const contextUtil = api.useContext();
   const handleCreateCollection = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log(e);
@@ -25,6 +25,7 @@ const CreateCollection: NextPage = () => {
       difficulty,
       // deck,
     });
+    await contextUtil.invalidate();
     await router.push("/collections/list-collections");
   };
 
