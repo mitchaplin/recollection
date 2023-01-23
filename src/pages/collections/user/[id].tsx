@@ -1,20 +1,21 @@
 import { type NextPage } from "next";
 import { useSession } from "next-auth/react";
-import LoadingSpinner from "../../../components/LoadingIcon";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const UserProfile: NextPage = () => {
   //   const router = useRouter();
   //   const { query } = useRouter();
   //   const contextUtil = api.useContext();
   const session = useSession();
+  const router = useRouter();
 
-  //   if (session.status === "unauthenticated") {
-  //     return router.push("/login");
-  //   }
-
-  if (session.status === "loading") {
-    return <LoadingSpinner />;
-  }
+  useEffect(() => {
+    if (session.status === "loading") return;
+    if (!session.data && session.status === "unauthenticated") {
+      void router.push("/");
+    }
+  }, [router, session]);
 
   return (
     <main className="flex h-screen w-screen flex-grow justify-center overflow-y-auto p-8">

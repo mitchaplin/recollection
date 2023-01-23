@@ -1,14 +1,14 @@
 import { randomUUID } from "crypto";
 import { z } from "zod";
 
-import { createTRPCRouter, publicProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 function capitalizeFirstLetter(s: string) {
   return s[0]!.toUpperCase() + s.slice(1);
 }
 
 export const collectionsRouter = createTRPCRouter({
-  createCollection: publicProcedure
+  createCollection: protectedProcedure
     .input(z.object({ name: z.string(), description: z.string(), author: z.string(), category: z.string(), difficulty: z.number() }))
     .mutation(async ({ input, ctx }) => {
     const id = randomUUID();
@@ -25,7 +25,7 @@ export const collectionsRouter = createTRPCRouter({
     return collection
 }),
 
-updateCollection: publicProcedure
+updateCollection: protectedProcedure
 .input(z.object({ name: z.string(), description: z.string(), author: z.string(), category: z.string(), id: z.string(), difficulty: z.number() }))
 .mutation(async ({ input, ctx }) => {
 const collection = await ctx.prisma.collection.update({
@@ -41,7 +41,7 @@ const collection = await ctx.prisma.collection.update({
 return collection
 }),
 
-  getCollections: publicProcedure.input(z.object({
+  getCollections: protectedProcedure.input(z.object({
     searchText: z.string().optional(),
   })).query(async ({ input , ctx }) => {
     let collections;
@@ -58,7 +58,7 @@ return collection
     return collections;
   }),
   
-  getCollection: publicProcedure.input(z.object({
+  getCollection: protectedProcedure.input(z.object({
     id: z.string(),
   })).query(async ({ input , ctx }) => {
       const collections = await ctx.prisma.collection.findFirstOrThrow(
@@ -66,7 +66,7 @@ return collection
     return collections;
   }),
 
-  delete: publicProcedure
+  delete: protectedProcedure
 		.input(
 			z.object({
 				id: z.string(),
@@ -87,7 +87,7 @@ return collection
 			return deleteCollection
 		}),
 
-  getCollectionCardCount: publicProcedure.input(
+  getCollectionCardCount: protectedProcedure.input(
     z.object({
         collectionId: z.string(),
       }).required()).query(async ({ input, ctx }) => {

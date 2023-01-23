@@ -1,9 +1,9 @@
 import { BookOpenIcon, RectangleGroupIcon } from "@heroicons/react/24/solid";
 import { type NextPage } from "next";
-import { signIn, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect } from "react";
 import { api } from "../utils/api";
 
 export const Dashboard: NextPage = () => {
@@ -13,6 +13,13 @@ export const Dashboard: NextPage = () => {
     e.preventDefault();
     await router.push("/collections/list-collections");
   };
+
+  useEffect(() => {
+    if (session.status === "loading") return;
+    if (!session.data && session.status === "unauthenticated") {
+      void router.push("/");
+    }
+  }, [router, session]);
 
   const appleIcon = (
     <Image src="/apple.png" alt="score" width="70" height="70" />
@@ -35,36 +42,7 @@ export const Dashboard: NextPage = () => {
       image: appleIcon,
     },
   ];
-  console.log(session);
-  if (!session.data)
-    return (
-      <main className="h-screen w-screen overflow-y-auto">
-        <div
-          className="mx-auto flex cursor-pointer flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0"
-          onClick={() => void signIn()}
-        >
-          <a
-            href="#"
-            className="mb-6 flex items-center text-2xl font-semibold text-gray-900 dark:text-white"
-          >
-            <Image
-              width={250}
-              height={250}
-              className="mr-2"
-              src="/discord-logo-blue.png"
-              alt="logo"
-            />
-          </a>
-          <div className="w-full rounded-lg bg-white shadow dark:border dark:border-gray-700 dark:bg-gray-800 sm:max-w-md md:mt-0 xl:p-0">
-            <div className="space-y-4 p-6 sm:p-8 md:space-y-6">
-              <h1 className="text-center text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl">
-                Please Sign In
-              </h1>
-            </div>
-          </div>
-        </div>
-      </main>
-    );
+
   return (
     <main className="h-screen w-screen overflow-y-auto p-8">
       <div className="grid grid-cols-4">
@@ -128,7 +106,7 @@ export const Dashboard: NextPage = () => {
                   <path
                     fillRule="evenodd"
                     d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
-                    clip-rule="evenodd"
+                    clipRule="evenodd"
                   ></path>
                 </svg>
               </a>
@@ -166,3 +144,5 @@ export const Dashboard: NextPage = () => {
     </main>
   );
 };
+
+export default Dashboard;

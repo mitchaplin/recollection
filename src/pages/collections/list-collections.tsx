@@ -6,6 +6,7 @@ import {
 } from "@heroicons/react/24/solid";
 import type { Collection } from "@prisma/client";
 import { type NextPage } from "next";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -15,6 +16,8 @@ import LoadingSpinner from "../../components/LoadingIcon";
 import { DeleteCollectionModal } from "../../components/utils/deleteCollectionModal";
 import { api } from "../../utils/api";
 const Collections: NextPage = () => {
+  const session = useSession();
+
   const [searchState, setSearchState] = useState("");
   const [modalState, setModalState] = useState({
     open: false,
@@ -42,6 +45,13 @@ const Collections: NextPage = () => {
   const collections = api.collectionsRouter.getCollections.useQuery({
     searchText: debouncedSearchTerm,
   });
+
+  useEffect(() => {
+    if (session.status === "loading") return;
+    if (!session.data && session.status === "unauthenticated") {
+      void router.push("/");
+    }
+  }, [router, session]);
 
   return (
     <main className="flex h-screen w-screen justify-center overflow-y-auto p-4">

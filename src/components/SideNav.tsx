@@ -8,6 +8,7 @@ export const SideNav: NextPage = () => {
   const router = useRouter();
   const currentRoute = router.pathname;
   const session = useSession();
+  if (!session.data) return <></>;
   return (
     <aside
       className="shadow-inner-2xl h-screen min-w-[16rem] border-r border-gray-700"
@@ -30,9 +31,9 @@ export const SideNav: NextPage = () => {
         <ul className="space-y-2 pt-4 font-heading">
           <li>
             <Link
-              href="/"
+              href="/dashboard"
               className={
-                currentRoute === "/"
+                currentRoute === "/dashboard"
                   ? `flex items-center rounded-l border-r-4 border-r-brand-subtleBlue bg-gray-700 p-2 text-base text-brand-offWhite transition-all hover:bg-gray-700`
                   : `flex items-center rounded-l p-2 text-base  text-brand-offWhite transition-all hover:bg-gray-700`
               }
@@ -186,7 +187,7 @@ export const SideNav: NextPage = () => {
               <li>
                 <div
                   className="flex items-center rounded-lg p-2 text-base  text-brand-offWhite hover:bg-gray-700"
-                  onClick={() => void signOut()}
+                  onClick={() => void signOut({ callbackUrl: "/" })}
                 >
                   <ArrowLongLeftIcon className="h-6 w-6 text-brand-offWhite transition duration-75 group-hover:text-brand-offWhite" />
                   <span className="ml-3 flex justify-end whitespace-nowrap text-center">
