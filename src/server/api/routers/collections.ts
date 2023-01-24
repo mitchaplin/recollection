@@ -1,6 +1,5 @@
 import { randomUUID } from "crypto";
 import { z } from "zod";
-
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 function capitalizeFirstLetter(s: string) {
@@ -12,7 +11,6 @@ export const collectionsRouter = createTRPCRouter({
     .input(z.object({ name: z.string(), description: z.string(), author: z.string(), category: z.string(), difficulty: z.number() }))
     .mutation(async ({ input, ctx }) => {
     const id = randomUUID();
-    console.log(ctx.session.user)
     const collection = await ctx.prisma.collection.create({
         data: {
             userId: ctx.session.user.id,
@@ -49,13 +47,15 @@ return collection
     let collections;
     if (!!input.searchText) { 
       collections = await ctx.prisma.collection.findMany(
-        { where: { OR: [
-          { name: { contains: input.searchText }}, 
-          { description: { contains: input.searchText }}, 
-          { author: { contains: input.searchText }}, 
-          { category: { contains: capitalizeFirstLetter(input.searchText) }}]}})
+        { where: 
+          { AND: [{ userId: ctx.session.user.id},
+            { OR: [
+            { name: { contains: input.searchText }}, 
+            { description: { contains: input.searchText }}, 
+            { author: { contains: input.searchText }}, 
+            { category: { contains: capitalizeFirstLetter(input.searchText)}}]}]}})
     } else { 
-      collections = await ctx.prisma.collection.findMany(); 
+      collections = await ctx.prisma.collection.findMany({ where: { userId: ctx.session.user.id}}); 
     }
     return collections;
   }),

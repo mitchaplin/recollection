@@ -48,9 +48,6 @@ const Collections: NextPage = () => {
 
   useEffect(() => {
     if (session.status === "loading") return;
-    if (!session.data && session.status === "unauthenticated") {
-      void router.push("/");
-    }
   }, [router, session]);
 
   return (
@@ -194,7 +191,7 @@ const Collections: NextPage = () => {
                       className="mt-6 flex justify-center rounded-lg bg-brand-actionBlue px-3 py-2 text-center text-sm font-medium text-brand-offWhite hover:bg-brand-subtleBlue  focus:outline-brand-lightBlue"
                     >
                       <Link
-                        href={`/collection/${collection.id}/study`}
+                        href={`/collections/study/${collection.id}`}
                         className="inline-flex items-center rounded-lg px-3 py-2 text-center text-sm font-medium text-brand-offWhite focus:outline-none"
                       >
                         Begin Study

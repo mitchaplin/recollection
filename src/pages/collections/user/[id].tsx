@@ -12,9 +12,6 @@ const UserProfile: NextPage = () => {
 
   useEffect(() => {
     if (session.status === "loading") return;
-    if (!session.data && session.status === "unauthenticated") {
-      void router.push("/");
-    }
   }, [router, session]);
 
   return (

@@ -19,7 +19,7 @@ export const middleware = (request: NextRequest) => {
 
 		return NextResponse.next()
 	}
-    
+    	
 	if (requestPathName.startsWith("/dashboard") || requestPathName.startsWith("/collections")) {
 		if (!hasAuthCookie) {
 			const url = request.nextUrl.clone()
@@ -34,7 +34,6 @@ export const middleware = (request: NextRequest) => {
 // Paths that you want to match for.
 // Visit https://nextjs.org/docs/advanced-features/middleware#matcher
 // for more on pattern matching.
-// When we add back trials stuff, this shouldn't match on my-dogs and just on /dashboard/:path*
 export const config = {
 	matcher: ["/dashboard", "/collections/:path*", "/collections/:path*", "/"],
 }

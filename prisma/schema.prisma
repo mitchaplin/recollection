@@ -48,14 +48,27 @@ model Session {
 }
 
 model User {
-    id            String       @id @default(cuid())
+    id            String         @id @default(cuid())
     name          String?
-    email         String?      @unique
+    email         String         @unique
     emailVerified DateTime?
     image         String?
     accounts      Account[]
     sessions      Session[]
     collections   Collection[]
+    studySessions StudySession[]
+    apples        Int            @default(0)
+}
+
+model StudySession {
+    id             String   @id @default(cuid())
+    createdAt      DateTime @default(now())
+    duration       Int
+    score          Int
+    collectionName String
+    collectionId   String
+    userId         String
+    User           User     @relation(fields: [userId], references: [id])
 }
 
 model VerificationToken {

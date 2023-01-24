@@ -11,9 +11,6 @@ const Login: NextPage = () => {
 
   useEffect(() => {
     if (session.status === "loading") return;
-    if (session.data && session.status === "authenticated") {
-      void router.push("/dashboard");
-    }
   }, [router, session]);
 
   return (

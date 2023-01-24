@@ -1,30 +1,34 @@
 import { BookOpenIcon, RectangleGroupIcon } from "@heroicons/react/24/solid";
+import dayjs from "dayjs";
 import { type NextPage } from "next";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect } from "react";
 import { api } from "../utils/api";
+
+import fromNow from "dayjs/plugin/relativeTime";
+
+dayjs.extend(fromNow);
 
 export const Dashboard: NextPage = () => {
   const router = useRouter();
   const session = useSession();
+
   const routeToCollections = async (e: React.FormEvent) => {
     e.preventDefault();
     await router.push("/collections/list-collections");
   };
 
-  // useEffect(() => {
-  //   if (session.status === "loading") return;
-  //   if (!session.data && session.status === "unauthenticated") {
-  //     void router.push("/");
-  //   }
-  // }, [router, session]);
+  useEffect(() => {
+    if (session.status === "loading") return;
+  }, [router, session]);
 
   const appleIcon = (
     <Image src="/apple.png" alt="score" width="70" height="70" />
   );
   const collections = api.collectionsRouter.getCollections.useQuery({});
+  const studySessions = api.studyRouter.getStudySessions.useQuery();
   const stats = [
     {
       name: "Total Collections",
@@ -33,12 +37,12 @@ export const Dashboard: NextPage = () => {
     },
     {
       name: "Study Sessions",
-      stat: "14",
+      stat: studySessions.data?.length,
       image: <BookOpenIcon className="h-16 w-16 text-brand-offWhite" />,
     },
     {
       name: "Apples Earned",
-      stat: "27",
+      stat: collections.data?.length,
       image: appleIcon,
     },
   ];
@@ -77,69 +81,49 @@ export const Dashboard: NextPage = () => {
             ))}
           </dl>
         </div>
-        <div className="col-span-4 m-4 pl-12 xl:col-span-3 xl:m-0 xl:mt-10">
-          <ol className="relative border-l border-gray-200 dark:border-gray-700">
-            <li className="mb-10 ml-4">
-              <div className="absolute -left-1.5 mt-1.5 h-3 w-3 rounded-full border border-white bg-gray-200 dark:border-gray-900 dark:bg-gray-700"></div>
-              <time className="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
-                February 2022
-              </time>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                Application UI code in Tailwind CSS
-              </h3>
-              <p className="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">
-                Get access to over 20+ pages including a dashboard layout,
-                charts, kanban board, calendar, and pre-order E-commerce &
-                Marketing pages.
-              </p>
-              <a
-                href="#"
-                className="inline-flex items-center rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:text-blue-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700"
-              >
-                Learn more{" "}
-                <svg
-                  className="ml-2 h-3 w-3"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
-              </a>
-            </li>
-            <li className="mb-10 ml-4">
-              <div className="absolute -left-1.5 mt-1.5 h-3 w-3 rounded-full border border-white bg-gray-200 dark:border-gray-900 dark:bg-gray-700"></div>
-              <time className="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
-                March 2022
-              </time>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                Marketing UI design in Figma
-              </h3>
-              <p className="text-base font-normal text-gray-500 dark:text-gray-400">
-                All of the pages and components are first designed in Figma and
-                we keep a parity between the two versions even as we update the
-                project.
-              </p>
-            </li>
-            <li className="ml-4">
-              <div className="absolute -left-1.5 mt-1.5 h-3 w-3 rounded-full border border-white bg-gray-200 dark:border-gray-900 dark:bg-gray-700"></div>
-              <time className="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
-                April 2022
-              </time>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                E-Commerce UI code in Tailwind CSS
-              </h3>
-              <p className="text-base font-normal text-gray-500 dark:text-gray-400">
-                Get started with dozens of web components and interactive
-                elements built on top of Tailwind CSS.
-              </p>
-            </li>
-          </ol>
-        </div>
+        {(studySessions?.data?.length || []) > 0 ? (
+          <div className="mx-none col-span-full xl:mx-72">
+            <ul
+              role="list"
+              className="divide-y divide-gray-200 border-b border-brand-subtleBlue"
+            >
+              {studySessions.data?.map((ss) => (
+                <li key={ss.id} className="py-4">
+                  <div className="flex space-x-3">
+                    <Image
+                      className="h-6 w-6 rounded-full"
+                      src={"/apple.png"}
+                      alt="Activity"
+                      width={70}
+                      height={70}
+                    />
+                    <div className="flex-1 space-y-1">
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-md font-medium text-brand-offWhite">
+                          {session.data?.user?.name} earned {ss.score} apples!
+                        </h3>
+                        <p className="text-sm text-gray-500">
+                          {dayjs(ss.createdAt).fromNow()}
+                        </p>
+                      </div>
+
+                      <p className="text-sm text-gray-500">
+                        <span className="text-heading text-brand-actionBlue">
+                          {ss.collectionName}
+                        </span>
+                        was studied for {ss.duration} minutes
+                      </p>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : (
+          <div className="mx-none col-span-full pt-24 text-center text-brand-offWhite xl:mx-72">
+            - No Study Session Activity -
+          </div>
+        )}
       </div>
     </main>
   );
