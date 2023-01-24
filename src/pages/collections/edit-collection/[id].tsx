@@ -66,9 +66,11 @@ const EditCollection: NextPage = () => {
 
   if (isLoading || isFetching)
     return (
-      <div>
-        <LoadingSpinner />
-      </div>
+      <main className="flex h-screen w-screen flex-grow justify-center overflow-y-auto p-8">
+        <div className="mx-auto flex justify-center py-8 px-4 lg:py-16">
+          <LoadingSpinner />
+        </div>
+      </main>
     );
 
   return (
@@ -187,7 +189,7 @@ const EditCollection: NextPage = () => {
                 Update Flash Cards
               </button>
               <button className="bg-brand-dark mt-4 rounded-lg bg-brand-actionBlue px-5 py-2.5 text-sm font-medium text-brand-offWhite hover:bg-brand-subtleBlue focus:outline-brand-lightBlue">
-                Edit Collection
+                Update Collection
               </button>
             </div>
           </form>

@@ -1,7 +1,7 @@
 import { type NextPage } from "next";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { api } from "../../utils/api";
 
@@ -18,7 +18,6 @@ const CreateCollection: NextPage = () => {
   const contextUtil = api.useContext();
   const handleCreateCollection = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(e);
     await createCollection.mutateAsync({
       name,
       description,
@@ -30,13 +29,6 @@ const CreateCollection: NextPage = () => {
     await contextUtil.invalidate();
     await router.push("/collections/list-collections");
   };
-
-  useEffect(() => {
-    if (session.status === "loading") return;
-    if (!session.data && session.status === "unauthenticated") {
-      void router.push("/");
-    }
-  }, [router, session]);
 
   return (
     <main className="flex h-screen w-screen flex-grow justify-center overflow-y-auto p-8">

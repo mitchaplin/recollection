@@ -12,8 +12,10 @@ export const collectionsRouter = createTRPCRouter({
     .input(z.object({ name: z.string(), description: z.string(), author: z.string(), category: z.string(), difficulty: z.number() }))
     .mutation(async ({ input, ctx }) => {
     const id = randomUUID();
+    console.log(ctx.session.user)
     const collection = await ctx.prisma.collection.create({
         data: {
+            userId: ctx.session.user.id,
             id: id,
             name: input.name,
             description: input.description,

@@ -1,8 +1,21 @@
 import { type NextPage } from "next";
 
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+
 const Login: NextPage = () => {
+  const session = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (session.status === "loading") return;
+    if (session.data && session.status === "authenticated") {
+      void router.push("/dashboard");
+    }
+  }, [router, session]);
+
   return (
     <main className="h-screen w-screen overflow-y-auto">
       <div

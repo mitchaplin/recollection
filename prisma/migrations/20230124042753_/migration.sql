@@ -67,9 +67,10 @@ CREATE TABLE "FlashCard" (
 CREATE TABLE "Collection" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "author" TEXT NOT NULL DEFAULT 'Anonymous',
-    "description" TEXT,
+    "author" TEXT NOT NULL DEFAULT 'You',
+    "description" TEXT NOT NULL DEFAULT 'No description',
     "difficulty" INTEGER NOT NULL DEFAULT 5,
+    "category" TEXT NOT NULL DEFAULT 'Other',
 
     CONSTRAINT "Collection_pkey" PRIMARY KEY ("id")
 );

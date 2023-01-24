@@ -19,7 +19,7 @@ const Collections: NextPage = () => {
   const session = useSession();
 
   const [searchState, setSearchState] = useState("");
-  const [modalState, setModalState] = useState({
+  const [deleteModalState, setDeleteModalState] = useState({
     open: false,
     id: "",
     name: "",
@@ -154,7 +154,7 @@ const Collections: NextPage = () => {
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();
-                          setModalState({
+                          setDeleteModalState({
                             open: true,
                             id: collection.id,
                             name: collection.name,
@@ -186,7 +186,13 @@ const Collections: NextPage = () => {
                         Author: {collection.author}
                       </p>
                     </div>
-                    <button className="mt-6 flex justify-center rounded-lg bg-brand-actionBlue px-3 py-2 text-center text-sm font-medium text-brand-offWhite hover:bg-brand-subtleBlue  focus:outline-brand-lightBlue">
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                      }}
+                      className="mt-6 flex justify-center rounded-lg bg-brand-actionBlue px-3 py-2 text-center text-sm font-medium text-brand-offWhite hover:bg-brand-subtleBlue  focus:outline-brand-lightBlue"
+                    >
                       <Link
                         href={`/collection/${collection.id}/study`}
                         className="inline-flex items-center rounded-lg px-3 py-2 text-center text-sm font-medium text-brand-offWhite focus:outline-none"
@@ -203,10 +209,12 @@ const Collections: NextPage = () => {
         </div>
       </div>
       <DeleteCollectionModal
-        name={modalState.name}
-        id={modalState.id}
-        open={modalState.open}
-        setOpen={() => setModalState({ ...modalState, open: false })}
+        name={deleteModalState.name}
+        id={deleteModalState.id}
+        open={deleteModalState.open}
+        setOpen={() =>
+          setDeleteModalState({ ...deleteModalState, open: false })
+        }
       />
     </main>
   );

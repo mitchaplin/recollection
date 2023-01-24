@@ -3,7 +3,7 @@ import { type NextPage } from "next";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React from "react";
 import { api } from "../utils/api";
 
 export const Dashboard: NextPage = () => {
@@ -14,12 +14,12 @@ export const Dashboard: NextPage = () => {
     await router.push("/collections/list-collections");
   };
 
-  useEffect(() => {
-    if (session.status === "loading") return;
-    if (!session.data && session.status === "unauthenticated") {
-      void router.push("/");
-    }
-  }, [router, session]);
+  // useEffect(() => {
+  //   if (session.status === "loading") return;
+  //   if (!session.data && session.status === "unauthenticated") {
+  //     void router.push("/");
+  //   }
+  // }, [router, session]);
 
   const appleIcon = (
     <Image src="/apple.png" alt="score" width="70" height="70" />
