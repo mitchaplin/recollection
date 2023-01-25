@@ -2,7 +2,6 @@ import { type NextPage } from "next";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import LoadingSpinner from "../../../components/LoadingIcon";
-
 import { api } from "../../../utils/api";
 
 const EditCollection: NextPage = () => {

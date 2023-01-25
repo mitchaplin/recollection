@@ -80,7 +80,7 @@ const Collections: NextPage = () => {
               </div>
             </form>
           </div>
-          <div className="flex">
+          <div className="pt-8 xl:pt-2">
             <Link
               href={"/collections/create-collection"}
               className="mt-1 focus:outline-none xl:p-0"

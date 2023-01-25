@@ -2,6 +2,7 @@ import { type NextPage } from "next";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import FlashCard from "../../components/FlashCard";
 
 import { api } from "../../utils/api";
 
@@ -149,6 +150,9 @@ const CreateCollection: NextPage = () => {
               </button>
             </div>
           </form>
+        </div>
+        <div className="flex justify-center">
+          <FlashCard />
         </div>
       </section>
     </main>
