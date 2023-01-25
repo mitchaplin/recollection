@@ -188,7 +188,7 @@ const Collections: NextPage = () => {
                         e.preventDefault();
                         e.stopPropagation();
                       }}
-                      className="mt-6 flex justify-center rounded-lg bg-brand-actionBlue px-3 py-2 text-center text-sm font-medium text-brand-offWhite hover:bg-brand-subtleBlue  focus:outline-brand-lightBlue"
+                      className="z-10 mt-6 flex justify-center rounded-lg bg-brand-actionBlue px-3 py-2 text-center text-sm font-medium text-brand-offWhite hover:bg-brand-subtleBlue  focus:outline-brand-lightBlue"
                     >
                       <Link
                         href={`/collections/study/${collection.id}`}

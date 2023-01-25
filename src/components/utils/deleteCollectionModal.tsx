@@ -78,7 +78,7 @@ export const DeleteCollectionModal = ({
                     <div className="mt-2">
                       <p className="text-sm text-gray-500">
                         {`Are you sure you want to Delete the ${name} collection? All of
-                          this collections associated flash cards will be permanently removed. This action cannot be undone.`}
+                          the associated flash cards will be permanently removed. This action cannot be undone.`}
                       </p>
                     </div>
                   </div>

@@ -66,14 +66,14 @@ const EditCollection: NextPage = () => {
 
   return (
     <main className="flex h-screen w-screen flex-grow justify-center overflow-y-auto p-8">
-      <section className="bg-brand-darkGray grow gap-8">
+      {/* <section className="bg-brand-darkGray grow gap-8">
         <button
           onClick={(e) => void handleCreateStudySession(e)}
           className="bg-brand-dark mt-4 rounded-lg bg-brand-actionBlue px-5 py-2.5 text-sm font-medium text-brand-offWhite hover:bg-brand-subtleBlue focus:outline-brand-lightBlue"
         >
-          Update Collection
+          Create Study Session
         </button>
-      </section>
+      </section> */}
     </main>
   );
 };

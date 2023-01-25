@@ -75,7 +75,7 @@ const EditCollection: NextPage = () => {
 
   return (
     <main className="flex h-screen w-screen flex-grow justify-center overflow-y-auto p-8">
-      <section className="bg-brand-darkGray grow gap-8">
+      <section className="bg-brand-darkGray max-w-[72rem] grow gap-8">
         <div className="mx-auto py-8 px-4 lg:py-16">
           <h1 className="font mx-52 mb-10 text-center font-heading text-3xl font-bold text-brand-offWhite">
             Edit Collection
@@ -126,7 +126,7 @@ const EditCollection: NextPage = () => {
                   <option>Select category</option>
                   <option value="Math">Mathematics</option>
                   <option value="Biology">Biology</option>
-                  <option value="Chemsitry">Chemsitry</option>
+                  <option value="Chemistry">Chemistry</option>
                   <option value="History">History</option>
                   <option value="Physics">Physics</option>
                   <option value="Engineering">Engineering</option>

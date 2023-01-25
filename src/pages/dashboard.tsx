@@ -82,46 +82,58 @@ export const Dashboard: NextPage = () => {
           </dl>
         </div>
         {(studySessions?.data?.length || []) > 0 ? (
-          <div className="mx-none col-span-full xl:mx-72">
+          <div className="col-span-full mx-auto w-96 xl:w-[50rem]">
+            <div className="text-body pt-24 text-center text-sm text-brand-offWhite">
+              - Recent Activity -
+            </div>
             <ul
               role="list"
-              className="divide-y divide-gray-200 border-b border-brand-subtleBlue"
+              className="divide-y divide-brand-subtleBlue border-b border-brand-subtleBlue"
             >
-              {studySessions.data?.map((ss) => (
-                <li key={ss.id} className="py-4">
-                  <div className="flex space-x-3">
-                    <Image
-                      className="h-6 w-6 rounded-full"
-                      src={"/apple.png"}
-                      alt="Activity"
-                      width={70}
-                      height={70}
-                    />
-                    <div className="flex-1 space-y-1">
-                      <div className="flex items-center justify-between">
-                        <h3 className="text-md font-medium text-brand-offWhite">
-                          {session.data?.user?.name} earned {ss.score} apples!
-                        </h3>
+              {studySessions.data
+                ?.filter((val, idx, arr) => idx > arr.length - 6)
+                .map((ss) => (
+                  <li key={ss.id} className="py-4 pt-12">
+                    <div className="flex space-x-3">
+                      <Image
+                        className="h-6 w-6 rounded-full"
+                        src={"/apple.png"}
+                        alt="Activity"
+                        width={70}
+                        height={70}
+                      />
+                      <div className="flex-1 space-y-1">
+                        <div className="flex items-center justify-between">
+                          <h3 className="text-md font-medium text-brand-offWhite">
+                            {session.data?.user?.name} earned {ss.score} apples!
+                          </h3>
+                          <p className="text-sm text-gray-500">
+                            {dayjs(ss.createdAt).fromNow()}
+                          </p>
+                        </div>
+
                         <p className="text-sm text-gray-500">
-                          {dayjs(ss.createdAt).fromNow()}
+                          <span
+                            onClick={(e) =>
+                              void router.push(
+                                `/collections/edit-collection/${ss.collectionId}`
+                              )
+                            }
+                            className="text-heading text-brand-actionBlue hover:cursor-pointer"
+                          >
+                            {ss.collectionName}
+                          </span>{" "}
+                          was studied for {ss.duration} minutes
                         </p>
                       </div>
-
-                      <p className="text-sm text-gray-500">
-                        <span className="text-heading text-brand-actionBlue">
-                          {ss.collectionName}
-                        </span>
-                        was studied for {ss.duration} minutes
-                      </p>
                     </div>
-                  </div>
-                </li>
-              ))}
+                  </li>
+                ))}
             </ul>
           </div>
         ) : (
           <div className="mx-none col-span-full pt-24 text-center text-brand-offWhite xl:mx-72">
-            - No Study Session Activity -
+            - No Recent Activity -
           </div>
         )}
       </div>

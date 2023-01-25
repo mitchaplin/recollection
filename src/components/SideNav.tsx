@@ -107,7 +107,7 @@ export const SideNav: NextPage = () => {
               }
             >
               <Link
-                href={`/user/${session.data?.user?.id}`}
+                href={`/profile/${session.data?.user?.id}`}
                 className={
                   currentRoute.includes("user")
                     ? `flex items-center rounded-l  border-r-4 border-r-brand-subtleBlue bg-gray-700 p-2 text-base text-brand-offWhite  transition-all hover:bg-gray-700`
@@ -176,7 +176,7 @@ export const SideNav: NextPage = () => {
                 ></path>
               </svg>
               <span className="ml-3 flex-1 whitespace-nowrap">
-                Recollection Pro
+                Recollection Pro XD
               </span>
             </a>
           </li>
@@ -214,23 +214,22 @@ export const SideNav: NextPage = () => {
         </ul>
         {session?.data?.user?.image && (
           <div className="mt-auto">
-            <div
-              className="flex flex-row justify-evenly gap-2 rounded-md bg-brand-gray p-2 text-left hover:bg-gray-700"
-              // onClick={(e) => router.push(`/users/${id}`)}
-            >
-              <Image
-                width={150}
-                height={150}
-                src={`${session?.data?.user?.image}`}
-                className="w-12 rounded-full"
-                alt="Avatar"
-              />
-              <div className="flex items-center">
-                <h5 className="font-xs text-md font-body text-brand-offWhite">
-                  {session.data.user.email}
-                </h5>
+            <Link href={`/profile/${session.data?.user?.id}`}>
+              <div className="flex flex-row justify-evenly gap-2 rounded-md bg-brand-gray p-2 text-left hover:bg-gray-700">
+                <Image
+                  width={150}
+                  height={150}
+                  src={`${session?.data?.user?.image}`}
+                  className="w-12 rounded-full"
+                  alt="Avatar"
+                />
+                <div className="flex items-center">
+                  <h5 className="font-xs text-md font-body text-brand-offWhite">
+                    {session.data.user.email}
+                  </h5>
+                </div>
               </div>
-            </div>
+            </Link>
           </div>
         )}
       </div>
