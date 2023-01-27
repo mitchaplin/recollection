@@ -2,6 +2,7 @@ import {
   BookOpenIcon,
   MagnifyingGlassIcon,
   PencilIcon,
+  Square2StackIcon,
   TrashIcon,
 } from "@heroicons/react/24/solid";
 import type { Collection } from "@prisma/client";
@@ -13,8 +14,10 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { CategoryBadge } from "../../components/CategoryBadge";
 import LoadingSpinner from "../../components/LoadingIcon";
-import { DeleteCollectionModal } from "../../components/utils/deleteCollectionModal";
+import { DeleteCollectionModal } from "../../components/utils/DeleteCollectionModal";
+
 import { api } from "../../utils/api";
+
 const Collections: NextPage = () => {
   const session = useSession();
 
@@ -120,7 +123,7 @@ const Collections: NextPage = () => {
                 key={collection.id}
                 onClick={() =>
                   void router.push(
-                    `/collections/edit-collection/${collection.id}`
+                    `/collections/edit-collection/${collection.id}/cards`
                   )
                 }
                 className="duration-250 mb-6 flex transform transition ease-in-out hover:-translate-y-1 hover:scale-105"
@@ -130,24 +133,47 @@ const Collections: NextPage = () => {
                   className="flex w-[24rem] grow flex-col rounded-lg bg-gray-800 shadow-xl hover:shadow-2xl"
                 >
                   <div className="flex justify-between gap-4">
-                    <span onClick={() => setSearchState(collection.category)}>
+                    <span>
                       <CategoryBadge categoryName={collection.category} />
                     </span>
                     <div className="flex gap-2 p-4">
                       <button
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="center"
+                        title="Edit Details"
                         onClick={() =>
                           void router.push(
-                            `/collections/edit-collection/${collection.id}`
+                            `/collections/edit-collection/${collection.id}/general`
                           )
                         }
                         className="flex items-center rounded-lg bg-none px-3 py-2 text-center text-sm font-medium text-brand-offWhite hover:bg-brand-subtleBlue  focus:outline-brand-lightBlue"
                       >
                         <Link
-                          href={`/collections/edit-collection/${collection.id}`}
+                          href={`/collections/edit-collection/${collection.id}/general`}
                         ></Link>
                         <PencilIcon className="h-5 w-5 text-brand-offWhite" />
                       </button>
                       <button
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="center"
+                        title="Edit Cards"
+                        onClick={() =>
+                          void router.push(
+                            `/collections/edit-collection/${collection.id}/cards`
+                          )
+                        }
+                        className="flex items-center rounded-lg bg-none px-3 py-2 text-center text-sm font-medium text-brand-offWhite hover:bg-brand-subtleBlue  focus:outline-brand-lightBlue"
+                      >
+                        <Link
+                          href={`/collections/edit-collection/${collection.id}/cards`}
+                        ></Link>
+
+                        <Square2StackIcon className="h-5 w-5 text-brand-offWhite" />
+                      </button>
+                      <button
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="center"
+                        title="Delete Collection"
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();

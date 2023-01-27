@@ -1,8 +1,8 @@
 import { type NextPage } from "next";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import LoadingSpinner from "../../../components/LoadingIcon";
-import { api } from "../../../utils/api";
+import LoadingSpinner from "../../../../components/LoadingIcon";
+import { api } from "../../../../utils/api";
 
 const EditCollection: NextPage = () => {
   const router = useRouter();
@@ -44,7 +44,7 @@ const EditCollection: NextPage = () => {
   const [category, setCategory] = useState<string>(
     collection?.category as string
   );
-  // const [deck, setDeck] = useState<string>("");
+
   const contextUtil = api.useContext();
   const displayName = collection?.name as string;
 
@@ -57,7 +57,6 @@ const EditCollection: NextPage = () => {
       author,
       category,
       difficulty,
-      // deck,
     });
     await contextUtil.invalidate();
     await router.push("/collections/list-collections");
@@ -184,9 +183,6 @@ const EditCollection: NextPage = () => {
               ></input>
             </div>
             <div className="flex justify-center gap-10">
-              <button className="bg-brand-dark mt-4 rounded-lg bg-brand-actionBlue px-5 py-2.5 text-sm font-medium text-brand-offWhite hover:bg-brand-subtleBlue focus:outline-brand-lightBlue">
-                Update Flash Cards
-              </button>
               <button className="bg-brand-dark mt-4 rounded-lg bg-brand-actionBlue px-5 py-2.5 text-sm font-medium text-brand-offWhite hover:bg-brand-subtleBlue focus:outline-brand-lightBlue">
                 Update Collection
               </button>

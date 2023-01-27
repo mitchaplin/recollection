@@ -2,7 +2,6 @@ import { type NextPage } from "next";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import FlashCard from "../../components/FlashCard";
 
 import { api } from "../../utils/api";
 
@@ -15,7 +14,7 @@ const CreateCollection: NextPage = () => {
   const [difficulty, setDifficulty] = useState<number>(5);
   const [author, setAuthor] = useState<string>("You");
   const [category, setCategory] = useState<string>("Other");
-  // const [deck, setDeck] = useState<string>("");
+
   const contextUtil = api.useContext();
   const handleCreateCollection = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,7 +24,6 @@ const CreateCollection: NextPage = () => {
       author,
       category,
       difficulty,
-      // deck,
     });
     await contextUtil.invalidate();
     await router.push("/collections/list-collections");
@@ -143,16 +141,10 @@ const CreateCollection: NextPage = () => {
             </div>
             <div className="flex justify-center gap-10">
               <button className="bg-brand-dark mt-4 rounded-lg bg-brand-actionBlue px-5 py-2.5 text-sm font-medium text-brand-offWhite hover:bg-brand-subtleBlue focus:outline-brand-lightBlue">
-                Add Flash Cards
-              </button>
-              <button className="bg-brand-dark mt-4 rounded-lg bg-brand-actionBlue px-5 py-2.5 text-sm font-medium text-brand-offWhite hover:bg-brand-subtleBlue focus:outline-brand-lightBlue">
                 Create Collection
               </button>
             </div>
           </form>
-        </div>
-        <div className="flex justify-center">
-          <FlashCard />
         </div>
       </section>
     </main>

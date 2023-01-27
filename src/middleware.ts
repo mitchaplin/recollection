@@ -20,7 +20,7 @@ export const middleware = (request: NextRequest) => {
 		return NextResponse.next()
 	}
     	
-	if (requestPathName.startsWith("/dashboard") || requestPathName.startsWith("/collections")) {
+	if (requestPathName.startsWith("/dashboard") || requestPathName.startsWith("/collections") || requestPathName.startsWith("/profile")) {
 		if (!hasAuthCookie) {
 			const url = request.nextUrl.clone()
 			url.pathname = "/"
@@ -35,5 +35,5 @@ export const middleware = (request: NextRequest) => {
 // Visit https://nextjs.org/docs/advanced-features/middleware#matcher
 // for more on pattern matching.
 export const config = {
-	matcher: ["/dashboard", "/collections/:path*", "/collections/:path*", "/"],
+	matcher: ["/dashboard", "/collections/:path*", "/collections/:path*", "/profile", "/"],
 }

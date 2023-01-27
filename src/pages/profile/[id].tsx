@@ -2,6 +2,7 @@ import { type NextPage } from "next";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { api } from "../../utils/api";
 
 const UserProfile: NextPage = () => {
   //   const router = useRouter();
@@ -9,6 +10,9 @@ const UserProfile: NextPage = () => {
   //   const contextUtil = api.useContext();
   const session = useSession();
   const router = useRouter();
+
+  const collections = api.collectionsRouter.getCollections.useQuery({});
+  const studySessions = api.studyRouter.getStudySessions.useQuery();
 
   useEffect(() => {
     if (session.status === "loading") return;
@@ -24,12 +28,12 @@ const UserProfile: NextPage = () => {
             </h1>
             <span className="flex justify-center text-center">
               <h1 className="font mb-8 truncate pr-1 text-center font-heading text-xl font-bold italic text-brand-offWhite md:mx-52 md:block md:max-w-sm">
-                Email: {session?.data?.user?.name}
+                Email: {session?.data?.user?.email}
               </h1>
             </span>
             <span className="flex justify-center text-center">
               <h1 className="font mb-8 truncate pr-1 text-center font-heading text-xl font-bold italic text-brand-offWhite md:mx-52 md:block md:max-w-sm">
-                Total Collections: 25
+                Total Collections: {collections.data?.length}
               </h1>
             </span>
             <span className="flex justify-center text-center">
@@ -39,7 +43,7 @@ const UserProfile: NextPage = () => {
             </span>
             <span className="flex justify-center text-center">
               <h1 className="font mb-8 truncate pr-1 text-center font-heading text-xl font-bold italic text-brand-offWhite md:mx-52 md:block md:max-w-sm">
-                Total Study Sessions: 12
+                Total Study {studySessions.data?.length}
               </h1>
             </span>
           </div>

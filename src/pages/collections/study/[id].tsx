@@ -28,18 +28,6 @@ const EditCollection: NextPage = () => {
 
   const createStudySession = api.studyRouter.createStudySession.useMutation();
 
-  //   const [name, setName] = useState<string>(collection?.name as string);
-  //   const [description, setDescription] = useState<string>(
-  //     collection?.description as string
-  //   );
-  //   const [difficulty, setDifficulty] = useState<number>(
-  //     collection?.difficulty as number
-  //   );
-  //   const [author, setAuthor] = useState<string>(collection?.author as string);
-  //   const [category, setCategory] = useState<string>(
-  //     collection?.category as string
-  //   );
-  // const [deck, setDeck] = useState<string>("");
   const contextUtil = api.useContext();
   const displayName = collection?.name as string;
 
@@ -66,14 +54,14 @@ const EditCollection: NextPage = () => {
 
   return (
     <main className="flex h-screen w-screen flex-grow justify-center overflow-y-auto p-8">
-      {/* <section className="bg-brand-darkGray grow gap-8">
+      <section className="bg-brand-darkGray grow gap-8">
         <button
           onClick={(e) => void handleCreateStudySession(e)}
           className="bg-brand-dark mt-4 rounded-lg bg-brand-actionBlue px-5 py-2.5 text-sm font-medium text-brand-offWhite hover:bg-brand-subtleBlue focus:outline-brand-lightBlue"
         >
           Create Study Session
         </button>
-      </section> */}
+      </section>
     </main>
   );
 };

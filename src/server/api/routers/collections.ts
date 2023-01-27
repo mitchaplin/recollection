@@ -2,10 +2,6 @@ import { randomUUID } from "crypto";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
-function capitalizeFirstLetter(s: string) {
-  return s[0]!.toUpperCase() + s.slice(1);
-}
-
 export const collectionsRouter = createTRPCRouter({
   createCollection: protectedProcedure
     .input(z.object({ name: z.string(), description: z.string(), author: z.string(), category: z.string(), difficulty: z.number() }))
@@ -29,7 +25,7 @@ updateCollection: protectedProcedure
 .input(z.object({ name: z.string(), description: z.string(), author: z.string(), category: z.string(), id: z.string(), difficulty: z.number() }))
 .mutation(async ({ input, ctx }) => {
 const collection = await ctx.prisma.collection.update({
-  where : { id: input.id },
+  where: { id: input.id },
     data: {
         name: input.name,
         description: input.description,
@@ -50,10 +46,10 @@ return collection
         { where: 
           { AND: [{ userId: ctx.session.user.id},
             { OR: [
-            { name: { contains: input.searchText }}, 
-            { description: { contains: input.searchText }}, 
-            { author: { contains: input.searchText }}, 
-            { category: { contains: capitalizeFirstLetter(input.searchText)}}]}]}})
+            { name: { contains: input.searchText, mode: 'insensitive' }}, 
+            { description: { contains: input.searchText, mode: 'insensitive' }}, 
+            { author: { contains: input.searchText, mode: 'insensitive' }}, 
+            { category: { contains: input.searchText, mode: "insensitive"}}]}]}})
     } else { 
       collections = await ctx.prisma.collection.findMany({ where: { userId: ctx.session.user.id}}); 
     }
@@ -64,7 +60,8 @@ return collection
     id: z.string(),
   })).query(async ({ input , ctx }) => {
       const collections = await ctx.prisma.collection.findFirstOrThrow(
-        { where: { id: input.id }})
+        { where: { AND: [{ id: input.id }, { userId: ctx.session.user.id}]}})
+
     return collections;
   }),
 

@@ -80,22 +80,21 @@ model VerificationToken {
 }
 
 model FlashCard {
-    id         Int    @id @default(autoincrement())
-    question   String
-    answer     String
-    difficulty Int    @default(5)
-    // Collection   Collection? @relation(fields: [collectionId], references: [id])
-    // collectionId String?
+    id           String      @id @default(cuid())
+    question     String
+    answer       String
+    Collection   Collection? @relation(fields: [collectionId], references: [id])
+    collectionId String?
 }
 
 model Collection {
-    id          String @id @unique @default(cuid())
+    id          String      @id @unique @default(cuid())
     name        String
-    author      String @default("You")
-    description String @default("No description")
-    difficulty  Int    @default(5)
-    category    String @default("Other")
-    // deck        FlashCard[]
+    author      String      @default("You")
+    description String      @default("No description")
+    difficulty  Int         @default(5)
+    category    String      @default("Other")
+    cards       FlashCard[]
 
     // image        String?
     // attempts     Int

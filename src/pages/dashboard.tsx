@@ -27,6 +27,8 @@ export const Dashboard: NextPage = () => {
   const appleIcon = (
     <Image src="/apple.png" alt="score" width="70" height="70" />
   );
+
+  console.log(session);
   const collections = api.collectionsRouter.getCollections.useQuery({});
   const studySessions = api.studyRouter.getStudySessions.useQuery();
   const stats = [
@@ -42,7 +44,7 @@ export const Dashboard: NextPage = () => {
     },
     {
       name: "Apples Earned",
-      stat: collections.data?.length,
+      stat: session.data?.user.apples,
       image: appleIcon,
     },
   ];
@@ -116,7 +118,7 @@ export const Dashboard: NextPage = () => {
                           <span
                             onClick={(e) =>
                               void router.push(
-                                `/collections/edit-collection/${ss.collectionId}`
+                                `/collections/edit-collection/${ss.collectionId}/general`
                               )
                             }
                             className="text-heading text-brand-actionBlue hover:cursor-pointer"

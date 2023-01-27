@@ -39,11 +39,25 @@ CREATE TABLE "Session" (
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "name" TEXT,
-    "email" TEXT,
+    "email" TEXT NOT NULL,
     "emailVerified" TIMESTAMP(3),
     "image" TEXT,
+    "apples" INTEGER NOT NULL DEFAULT 0,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "StudySession" (
+    "id" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "duration" INTEGER NOT NULL,
+    "score" INTEGER NOT NULL,
+    "collectionName" TEXT NOT NULL,
+    "collectionId" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+
+    CONSTRAINT "StudySession_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -55,10 +69,10 @@ CREATE TABLE "VerificationToken" (
 
 -- CreateTable
 CREATE TABLE "FlashCard" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "question" TEXT NOT NULL,
     "answer" TEXT NOT NULL,
-    "difficulty" INTEGER NOT NULL DEFAULT 5,
+    "collectionId" TEXT,
 
     CONSTRAINT "FlashCard_pkey" PRIMARY KEY ("id")
 );
@@ -71,6 +85,7 @@ CREATE TABLE "Collection" (
     "description" TEXT NOT NULL DEFAULT 'No description',
     "difficulty" INTEGER NOT NULL DEFAULT 5,
     "category" TEXT NOT NULL DEFAULT 'Other',
+    "userId" TEXT NOT NULL,
 
     CONSTRAINT "Collection_pkey" PRIMARY KEY ("id")
 );
@@ -98,3 +113,12 @@ ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId"
 
 -- AddForeignKey
 ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "StudySession" ADD CONSTRAINT "StudySession_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "FlashCard" ADD CONSTRAINT "FlashCard_collectionId_fkey" FOREIGN KEY ("collectionId") REFERENCES "Collection"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Collection" ADD CONSTRAINT "Collection_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
