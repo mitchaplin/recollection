@@ -136,38 +136,43 @@ const Collections: NextPage = () => {
                     <span>
                       <CategoryBadge categoryName={collection.category} />
                     </span>
-                    <div className="flex gap-2 p-4">
-                      <button
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="center"
-                        title="Edit Details"
-                        onClick={() =>
-                          void router.push(
-                            `/collections/edit-collection/${collection.id}/general`
-                          )
-                        }
-                        className="flex items-center rounded-lg bg-none px-3 py-2 text-center text-sm font-medium text-brand-offWhite hover:bg-brand-subtleBlue  focus:outline-brand-lightBlue"
+                    <div
+                      onClick={(e) => {
+                        e.stopPropagation();
+                      }}
+                      className="flex gap-2 p-4"
+                    >
+                      <Link
+                        href={`/collections/edit-collection/${collection.id}/general`}
                       >
-                        <Link
-                          href={`/collections/edit-collection/${collection.id}/general`}
-                        ></Link>
-                        <PencilIcon className="h-5 w-5 text-brand-offWhite" />
-                      </button>
+                        <button
+                          data-bs-toggle="tooltip"
+                          data-bs-placement="center"
+                          title="Edit Details"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            void router.push(
+                              `/collections/edit-collection/${collection.id}/general`
+                            );
+                          }}
+                          className="z-[500] flex items-center rounded-lg bg-none px-3 py-2 text-center text-sm font-medium text-brand-offWhite hover:bg-brand-subtleBlue  focus:outline-brand-lightBlue"
+                        >
+                          <PencilIcon className="h-5 w-5 text-brand-offWhite" />
+                        </button>
+                      </Link>
                       <button
                         data-bs-toggle="tooltip"
                         data-bs-placement="center"
                         title="Edit Cards"
-                        onClick={() =>
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
                           void router.push(
                             `/collections/edit-collection/${collection.id}/cards`
-                          )
-                        }
+                          );
+                        }}
                         className="flex items-center rounded-lg bg-none px-3 py-2 text-center text-sm font-medium text-brand-offWhite hover:bg-brand-subtleBlue  focus:outline-brand-lightBlue"
                       >
-                        <Link
-                          href={`/collections/edit-collection/${collection.id}/cards`}
-                        ></Link>
-
                         <Square2StackIcon className="h-5 w-5 text-brand-offWhite" />
                       </button>
                       <button
@@ -183,7 +188,7 @@ const Collections: NextPage = () => {
                             name: collection.name,
                           });
                         }}
-                        className="z-10 inline-flex items-center rounded-lg bg-none px-3 py-2 text-center text-sm font-medium text-brand-offWhite hover:bg-red-800 focus:outline-brand-lightBlue"
+                        className="z-500 inline-flex items-center rounded-lg bg-none px-3 py-2 text-center text-sm font-medium text-brand-offWhite hover:bg-red-800 focus:outline-brand-lightBlue"
                       >
                         <TrashIcon className="h-5 w-5 text-brand-offWhite" />
                       </button>

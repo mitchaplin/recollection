@@ -23,11 +23,8 @@ export const FlashCardModal = ({
   const contextUtil = api.useContext();
   const createFlashCard = api.flashCardRouter.createFlashCard.useMutation();
   const updateFlashCard = api.flashCardRouter.updateFlashCard.useMutation();
-  console.log(data);
   const [question, setQuestion] = useState<string>(isEdit ? data.question : "");
   const [answer, setAnswer] = useState<string>(isEdit ? data.answer : "");
-  console.log(question, answer);
-
   useEffect(() => {
     if (isEdit) {
       setQuestion(data.question);
@@ -75,7 +72,7 @@ export const FlashCardModal = ({
     <Transition.Root show={open} as={Fragment}>
       <Dialog
         as="div"
-        className="relative z-10"
+        className="relative z-[99999999999999999]"
         initialFocus={cancelButtonRef}
         onClose={setOpen}
       >
@@ -91,8 +88,8 @@ export const FlashCardModal = ({
           <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
         </Transition.Child>
 
-        <div className="fixed inset-0 z-10 overflow-y-auto">
-          <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+        <div className="fixed inset-0 overflow-y-auto bg-opacity-75">
+          <div className="flex min-h-full items-center justify-center p-0 text-center">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -102,14 +99,14 @@ export const FlashCardModal = ({
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-brand-offWhite px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
-                <div className="mx-auto py-8 px-4 lg:py-16">
-                  <h1 className="font mx-52 mb-10 text-center font-heading text-3xl font-bold text-brand-offWhite">
+              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-brand-offWhite  px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:w-full sm:max-w-lg">
+                <div className="mx-auto px-4 py-16">
+                  <h1 className="font mb-10 text-center font-heading text-3xl font-bold text-brand-gray">
                     {isEdit ? "Edit Flash Card" : "Create Flash Card"}
                   </h1>
                   <form
                     onSubmit={(e) => void handleSubmitFlashCard(e)}
-                    className={"mx-36 flex grow flex-col gap-6"}
+                    className={"flex w-full grow flex-col gap-6"}
                   >
                     <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
                       <div className="sm:col-span-2">
@@ -119,14 +116,13 @@ export const FlashCardModal = ({
                         >
                           Collection Question
                         </label>
-                        <input
-                          type="text"
-                          name="name"
-                          id="name"
+                        <textarea
+                          name="question"
+                          id="question"
                           value={question}
                           onChange={(e) => setQuestion(e.target.value)}
-                          className="dark:focus:border-primary-500 dark:focus:ring-primary-500 block w-full rounded-lg border border-gray-600 bg-gray-700 p-2.5 text-sm text-brand-offWhite placeholder-gray-400 focus:border-brand-subtleBlue"
-                          placeholder="My Awesome Collection"
+                          className="dark:focus:border-primary-500 dark:focus:ring-primary-500 block h-44 w-full rounded-lg border border-gray-600 bg-gray-700 p-2.5 text-sm text-brand-offWhite placeholder-gray-400 focus:border-brand-subtleBlue"
+                          placeholder="Flash Card Question"
                           required
                         />
                       </div>
@@ -137,13 +133,14 @@ export const FlashCardModal = ({
                         >
                           Answer
                         </label>
-                        <input
-                          id="description"
+                        <textarea
+                          id="answer"
+                          cols={8}
                           value={answer}
                           onChange={(e) => setAnswer(e.target.value)}
-                          className="dark:focus:border-primary-500 dark:focus:ring-primary-500 block w-full rounded-lg border border-gray-600 bg-gray-700 p-2.5 text-sm text-brand-offWhite placeholder-gray-400 focus:border-brand-subtleBlue"
-                          placeholder="Physics 500 Level Unit 4"
-                        ></input>
+                          className="dark:focus:border-primary-500 dark:focus:ring-primary-500 block h-44 w-full rounded-lg border border-gray-600 bg-gray-700 p-2.5 text-sm text-brand-offWhite placeholder-gray-400 focus:border-brand-subtleBlue"
+                          placeholder="Flash Card Answer"
+                        ></textarea>
                       </div>
                     </div>
                     <div className="flex justify-center gap-10">

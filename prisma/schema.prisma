@@ -80,11 +80,14 @@ model VerificationToken {
 }
 
 model FlashCard {
-    id           String      @id @default(cuid())
+    id           String     @id @default(cuid())
     question     String
     answer       String
-    Collection   Collection? @relation(fields: [collectionId], references: [id])
-    collectionId String?
+    rank         Int        @default(0)
+    Collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+    collectionId String
+
+    @@unique([collectionId, rank])
 }
 
 model Collection {

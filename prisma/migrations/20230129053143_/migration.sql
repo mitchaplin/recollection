@@ -72,7 +72,8 @@ CREATE TABLE "FlashCard" (
     "id" TEXT NOT NULL,
     "question" TEXT NOT NULL,
     "answer" TEXT NOT NULL,
-    "collectionId" TEXT,
+    "rank" INTEGER NOT NULL DEFAULT 0,
+    "collectionId" TEXT NOT NULL,
 
     CONSTRAINT "FlashCard_pkey" PRIMARY KEY ("id")
 );
@@ -106,6 +107,9 @@ CREATE UNIQUE INDEX "VerificationToken_token_key" ON "VerificationToken"("token"
 CREATE UNIQUE INDEX "VerificationToken_identifier_token_key" ON "VerificationToken"("identifier", "token");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "FlashCard_collectionId_rank_key" ON "FlashCard"("collectionId", "rank");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Collection_id_key" ON "Collection"("id");
 
 -- AddForeignKey
@@ -118,7 +122,7 @@ ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId"
 ALTER TABLE "StudySession" ADD CONSTRAINT "StudySession_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "FlashCard" ADD CONSTRAINT "FlashCard_collectionId_fkey" FOREIGN KEY ("collectionId") REFERENCES "Collection"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "FlashCard" ADD CONSTRAINT "FlashCard_collectionId_fkey" FOREIGN KEY ("collectionId") REFERENCES "Collection"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Collection" ADD CONSTRAINT "Collection_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

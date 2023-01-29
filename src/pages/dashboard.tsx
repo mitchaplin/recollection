@@ -28,7 +28,6 @@ export const Dashboard: NextPage = () => {
     <Image src="/apple.png" alt="score" width="70" height="70" />
   );
 
-  console.log(session);
   const collections = api.collectionsRouter.getCollections.useQuery({});
   const studySessions = api.studyRouter.getStudySessions.useQuery();
   const stats = [
