@@ -4,34 +4,66 @@ import { useRouter } from "next/router";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { api } from "../../utils/api";
 
-export const CreateFlashCardModal = ({
+export const FlashCardModal = ({
   collectionId,
   open,
   setOpen,
+  isEdit,
+  data,
 }: {
   collectionId: string;
   open: boolean;
+  isEdit: boolean;
   setOpen: () => void;
+  data: { question: string; answer: string; id: string };
 }) => {
   const cancelButtonRef = useRef(null);
   const session = useSession();
   const router = useRouter();
   const contextUtil = api.useContext();
   const createFlashCard = api.flashCardRouter.createFlashCard.useMutation();
+  const updateFlashCard = api.flashCardRouter.updateFlashCard.useMutation();
+  console.log(data);
+  const [question, setQuestion] = useState<string>(isEdit ? data.question : "");
+  const [answer, setAnswer] = useState<string>(isEdit ? data.answer : "");
+  console.log(question, answer);
 
-  const [question, setQuestion] = useState<string>("");
-  const [answer, setAnswer] = useState<string>("");
+  useEffect(() => {
+    if (isEdit) {
+      setQuestion(data.question);
+      setAnswer(data.answer);
+    }
+  }, [isEdit, data.answer, data.question]);
 
-  const handleCreateFlashCard = async (e: React.FormEvent) => {
+  useEffect(() => {
+    if (!isEdit) {
+      setQuestion("");
+      setAnswer("");
+    }
+  }, [isEdit]);
+
+  const handleSubmitFlashCard = async (e: React.FormEvent) => {
     e.preventDefault();
-    await createFlashCard.mutateAsync(
-      {
-        question: question,
-        answer: answer,
-        collectionId: collectionId,
-      },
-      { onSuccess: () => setOpen() }
-    );
+    if (isEdit) {
+      await updateFlashCard.mutateAsync(
+        {
+          id: data.id,
+          question: question,
+          answer: answer,
+          collectionId: collectionId,
+        },
+        { onSuccess: () => setOpen() }
+      );
+    } else {
+      await createFlashCard.mutateAsync(
+        {
+          question: question,
+          answer: answer,
+          collectionId: collectionId,
+        },
+        { onSuccess: () => setOpen() }
+      );
+    }
     await contextUtil.invalidate();
   };
 
@@ -73,10 +105,10 @@ export const CreateFlashCardModal = ({
               <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-brand-offWhite px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
                 <div className="mx-auto py-8 px-4 lg:py-16">
                   <h1 className="font mx-52 mb-10 text-center font-heading text-3xl font-bold text-brand-offWhite">
-                    Add A New Flash Card
+                    {isEdit ? "Edit Flash Card" : "Create Flash Card"}
                   </h1>
                   <form
-                    onSubmit={(e) => void handleCreateFlashCard(e)}
+                    onSubmit={(e) => void handleSubmitFlashCard(e)}
                     className={"mx-36 flex grow flex-col gap-6"}
                   >
                     <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
@@ -116,7 +148,7 @@ export const CreateFlashCardModal = ({
                     </div>
                     <div className="flex justify-center gap-10">
                       <button className="bg-brand-dark mt-4 rounded-lg bg-brand-actionBlue px-5 py-2.5 text-sm font-medium text-brand-offWhite hover:bg-brand-subtleBlue focus:outline-brand-lightBlue">
-                        Add Flash Card
+                        {isEdit ? "Edit Flash Card" : "Create Flash Card"}
                       </button>
                     </div>
                   </form>

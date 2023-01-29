@@ -126,7 +126,7 @@ const Collections: NextPage = () => {
                     `/collections/edit-collection/${collection.id}/cards`
                   )
                 }
-                className="duration-250 mb-6 flex transform transition ease-in-out hover:-translate-y-1 hover:scale-105"
+                className="duration-250 mb-6 flex transform transition ease-in-out hover:-translate-y-1 hover:scale-105 hover:cursor-pointer"
               >
                 <div
                   key={collection.id}
