@@ -16,6 +16,7 @@ const FlashCards: NextPage = () => {
   const router = useRouter();
   const { query } = useRouter();
   const [cards, setCards] = useState<FlashCard[]>([]);
+  const [reordering, setReordering] = useState(false);
   const [deleteCardModalState, setDeleteCardModalState] = useState({
     open: false,
     id: "",
@@ -24,16 +25,10 @@ const FlashCards: NextPage = () => {
   const reorderFlashCard = api.flashCardRouter.reorderFlashCard.useMutation();
 
   const collectionId = query.id as string;
-  // a little function to help us with reordering the result
-  const reorder = async (
-    // cardId: string,
-    // startIndex: number,
-    // endIndex: number
 
-    result: DropResult
-  ) => {
+  const reorder = async (result: DropResult) => {
     if (!result.destination) return;
-    console.log(result);
+    setReordering(true);
     await reorderFlashCard.mutateAsync(
       {
         collectionId: collectionId,
@@ -44,6 +39,7 @@ const FlashCards: NextPage = () => {
       {
         onSuccess: () => {
           void contextUtil.flashCardRouter.getFlashCards.invalidate();
+          setTimeout(() => setReordering(false), 500);
         },
       }
     );
@@ -99,7 +95,7 @@ const FlashCards: NextPage = () => {
         )}
         {flashCards.isError && <p>Error Fetching Card Data :/</p>}
         {flashCards.data?.length === 0 && (
-          <h5 className="flex h-2/3 w-[24rem] items-center justify-center text-2xl font-bold tracking-tight text-brand-offWhite xl:flex-grow xl:flex-row xl:justify-start">
+          <h5 className="mx-auto flex h-1/2 w-full items-center justify-center text-2xl font-bold tracking-tight text-brand-offWhite">
             No Cards Found.
           </h5>
         )}
@@ -114,74 +110,101 @@ const FlashCards: NextPage = () => {
                 {cards
                   // ?.sort((a, b) => a.rank - b.rank)
                   .map((card: FlashCard, index) => {
-                    return (
-                      <Draggable
-                        key={card.id}
-                        draggableId={card.id}
-                        index={index}
-                      >
-                        {(provided) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                          >
-                            <div className="duration-250 hover:scale-102 cursor-pointem  grid h-[14rem] w-auto transform pb-4 transition ease-in-out hover:-translate-y-1">
-                              <div className="flex-col rounded-lg bg-gray-800 pb-12 shadow-xl hover:shadow-2xl">
-                                <div className="flex justify-between gap-4">
-                                  <h5 className="truncate p-8 text-xl font-bold tracking-tight text-brand-offWhite">
-                                    Question:
-                                  </h5>
-                                  <div className="flex gap-2 p-6">
-                                    <button
-                                      onClick={(e) => {
-                                        setFlashCardModalState({
-                                          open: true,
-                                          collectionId: collectionId,
-                                          isEdit: true,
-                                          data: {
-                                            id: card.id,
-                                            question: card.question,
-                                            answer: card.answer,
-                                          },
-                                        });
-                                      }}
-                                      data-bs-toggle="tooltip"
-                                      data-bs-placement="center"
-                                      title="Edit Details"
-                                      className="flex items-center rounded-lg bg-none px-3 py-2 text-center text-sm font-medium text-brand-offWhite hover:bg-brand-subtleBlue  focus:outline-brand-lightBlue"
-                                    >
-                                      <PencilIcon className="h-5 w-5 text-brand-offWhite" />
-                                    </button>
-                                    <button
-                                      onClick={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        setDeleteCardModalState({
-                                          open: true,
-                                          id: card?.id,
-                                        });
-                                      }}
-                                      className="z-10 inline-flex items-center rounded-lg bg-none px-3 py-2 text-center text-sm font-medium text-brand-offWhite hover:bg-red-800 focus:outline-brand-lightBlue"
-                                    >
-                                      <TrashIcon className="h-5 w-5 text-brand-offWhite" />
-                                    </button>
+                    if (reordering) {
+                      return (
+                        <div
+                          key={card.id}
+                          className="duration-250 hover:scale-102 cursor-pointem  grid h-[14rem] w-auto transform pb-4 transition ease-in-out hover:-translate-y-1"
+                        >
+                          <div className="flex-col rounded-lg bg-gray-800 pb-12 shadow-xl hover:shadow-2xl">
+                            <div className="justify-left flex h-full w-full gap-4 pt-12 pl-8">
+                              <div
+                                role="status"
+                                className="animate-pulse h-full w-full max-w-sm"
+                              >
+                                <div className="mb-4 h-2.5 w-48 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+                                <div className="mb-2.5 h-2 max-w-[360px] rounded-full bg-gray-200 dark:bg-gray-700"></div>
+                                <div className="mb-2.5 h-2 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+                                <div className="mb-2.5 h-2 max-w-[330px] rounded-full bg-gray-200 dark:bg-gray-700"></div>
+                                <div className="mb-2.5 h-2 max-w-[300px] rounded-full bg-gray-200 dark:bg-gray-700"></div>
+                                <div className="h-2 max-w-[360px] rounded-full bg-gray-200 dark:bg-gray-700"></div>
+                                <span className="sr-only">Loading...</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    } else {
+                      return (
+                        <Draggable
+                          key={card.id}
+                          draggableId={card.id}
+                          index={index}
+                        >
+                          {(provided) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                            >
+                              <div className="duration-250 hover:scale-102 cursor-pointem  grid h-[14rem] w-auto transform pb-4 transition ease-in-out hover:-translate-y-1">
+                                <div className="flex-col rounded-lg bg-gray-800 pb-12 shadow-xl hover:shadow-2xl">
+                                  <div className="flex justify-between gap-4">
+                                    <h5 className="truncate p-8 text-xl font-bold tracking-tight text-brand-offWhite">
+                                      Question
+                                    </h5>
+                                    <div className="flex gap-2 p-6">
+                                      <button
+                                        onClick={() => {
+                                          setFlashCardModalState({
+                                            open: true,
+                                            collectionId: collectionId,
+                                            isEdit: true,
+                                            data: {
+                                              id: card.id,
+                                              question: card.question,
+                                              answer: card.answer,
+                                            },
+                                          });
+                                        }}
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="center"
+                                        title="Edit Details"
+                                        className="flex items-center rounded-lg bg-none px-3 py-2 text-center text-sm font-medium text-brand-offWhite hover:bg-brand-subtleBlue  focus:outline-brand-lightBlue"
+                                      >
+                                        <PencilIcon className="h-5 w-5 text-brand-offWhite" />
+                                      </button>
+                                      <button
+                                        onClick={(e) => {
+                                          e.preventDefault();
+                                          e.stopPropagation();
+                                          setDeleteCardModalState({
+                                            open: true,
+                                            id: card?.id,
+                                          });
+                                        }}
+                                        className="z-10 inline-flex items-center rounded-lg bg-none px-3 py-2 text-center text-sm font-medium text-brand-offWhite hover:bg-red-800 focus:outline-brand-lightBlue"
+                                      >
+                                        <TrashIcon className="h-5 w-5 text-brand-offWhite" />
+                                      </button>
+                                    </div>
                                   </div>
-                                </div>
-                                <div className="flex flex-grow flex-col px-8">
-                                  <div className="flex grow flex-col gap-4">
-                                    <p className="text-md dis block h-16 overflow-auto whitespace-normal break-normal break-words break-all text-left font-normal text-brand-offWhite">
-                                      {card.question}
-                                    </p>
+                                  <div className="flex flex-grow flex-col px-8">
+                                    <div className="flex grow flex-col gap-4">
+                                      <p className="text-md dis block h-16 overflow-auto whitespace-normal break-normal break-words break-all text-left font-normal text-brand-offWhite">
+                                        {card.question}
+                                      </p>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        )}
-                      </Draggable>
-                    );
+                          )}
+                        </Draggable>
+                      );
+                    }
                   })}
+                {provided.placeholder}
               </div>
             )}
           </Droppable>

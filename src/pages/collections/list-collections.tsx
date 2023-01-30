@@ -114,7 +114,7 @@ const Collections: NextPage = () => {
           {collections.isError && <p>Error Fetching Collection Data :/</p>}
           {collections.data?.length === 0 && (
             <h5 className="flex h-2/3 w-[24rem] items-center justify-center text-2xl font-bold tracking-tight text-brand-offWhite xl:flex-grow xl:flex-row xl:justify-start">
-              No Collections Found.
+              <p>No Collections Found.</p>
             </h5>
           )}
           {collections.data?.map((collection: Collection) => {

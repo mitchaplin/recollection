@@ -61,7 +61,7 @@ export const FlashCardModal = ({
         { onSuccess: () => setOpen() }
       );
     }
-    await contextUtil.invalidate();
+    await contextUtil.flashCardRouter.getFlashCards.invalidate();
   };
 
   useEffect(() => {
@@ -112,7 +112,7 @@ export const FlashCardModal = ({
                       <div className="sm:col-span-2">
                         <label
                           htmlFor="question"
-                          className="mb-2 block text-sm font-medium text-brand-offWhite"
+                          className="text-heading mb-2 block font-medium text-brand-gray"
                         >
                           Collection Question
                         </label>
@@ -129,7 +129,7 @@ export const FlashCardModal = ({
                       <div className="sm:col-span-2">
                         <label
                           htmlFor="answer"
-                          className="mb-2 block text-sm font-medium text-gray-900 dark:text-brand-offWhite"
+                          className="text-body mb-2 block font-medium text-brand-gray"
                         >
                           Answer
                         </label>
