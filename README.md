@@ -11,11 +11,8 @@
 7. `open http://localhost:3000`
 
 # TODO
-Streaks, Thumbs up / Thumbs Down 
-Hints
-Burn down ones wrong vs right 
-Collection Data Input, automate?
-Timed Runs
-CSV importer by line per card 
-DND kit
-Auto animate 
+## Streaks 
+## Hints
+## Collection Data Input, automate?
+
+## CSV importer by line per card 

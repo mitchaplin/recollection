@@ -58,7 +58,7 @@ const EditCollection: NextPage = () => {
       category,
       difficulty,
     });
-    await contextUtil.invalidate();
+    await contextUtil.collectionsRouter.invalidate();
     await router.push("/collections/list-collections");
   };
 

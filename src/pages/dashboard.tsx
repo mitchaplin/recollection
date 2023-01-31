@@ -8,6 +8,7 @@ import React, { useEffect } from "react";
 import { api } from "../utils/api";
 
 import fromNow from "dayjs/plugin/relativeTime";
+import { AppleIcon } from "../components/utils/AppleIcon";
 
 dayjs.extend(fromNow);
 
@@ -23,10 +24,6 @@ export const Dashboard: NextPage = () => {
   useEffect(() => {
     if (session.status === "loading") return;
   }, [router, session]);
-
-  const appleIcon = (
-    <Image src="/apple.png" alt="score" width="70" height="70" />
-  );
 
   const collections = api.collectionsRouter.getCollections.useQuery({});
   const studySessions = api.studyRouter.getStudySessions.useQuery();
@@ -44,7 +41,7 @@ export const Dashboard: NextPage = () => {
     {
       name: "Apples Earned",
       stat: session.data?.user.apples,
-      image: appleIcon,
+      image: AppleIcon,
     },
   ];
 
@@ -115,7 +112,7 @@ export const Dashboard: NextPage = () => {
 
                         <p className="text-sm text-gray-500">
                           <span
-                            onClick={(e) =>
+                            onClick={() =>
                               void router.push(
                                 `/collections/edit-collection/${ss.collectionId}/general`
                               )

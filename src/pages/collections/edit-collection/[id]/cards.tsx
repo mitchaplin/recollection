@@ -151,7 +151,7 @@ const FlashCards: NextPage = () => {
                                 <div className="flex-col rounded-lg bg-gray-800 pb-12 shadow-xl hover:shadow-2xl">
                                   <div className="flex justify-between gap-4">
                                     <h5 className="truncate p-8 text-xl font-bold tracking-tight text-brand-offWhite">
-                                      Question
+                                      Question: {index + 1}
                                     </h5>
                                     <div className="flex gap-2 p-6">
                                       <button
