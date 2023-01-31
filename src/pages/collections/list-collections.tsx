@@ -214,21 +214,20 @@ const Collections: NextPage = () => {
                         Author: {collection.author}
                       </p>
                     </div>
-                    <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                      }}
-                      className="z-10 mt-6 flex justify-center rounded-lg bg-brand-actionBlue px-3 py-2 text-center text-sm font-medium text-brand-offWhite hover:bg-brand-subtleBlue  focus:outline-brand-lightBlue"
+                    <Link
+                      href={`/collections/study/${collection.id}`}
+                      className="flex items-center justify-center rounded-lg px-3 py-2 text-center text-sm font-medium text-brand-offWhite focus:outline-none"
                     >
-                      <Link
-                        href={`/collections/study/${collection.id}`}
-                        className="inline-flex items-center rounded-lg px-3 py-2 text-center text-sm font-medium text-brand-offWhite focus:outline-none"
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                        }}
+                        className="z-50 mt-6 flex justify-center rounded-lg bg-brand-actionBlue px-3 py-2 text-center text-sm font-medium text-brand-offWhite hover:bg-brand-subtleBlue  focus:outline-brand-lightBlue"
                       >
                         Begin Study
                         <BookOpenIcon className="ml-3 h-5 w-5 text-brand-offWhite" />
-                      </Link>
-                    </button>
+                      </button>
+                    </Link>
                   </div>
                 </div>
               </div>

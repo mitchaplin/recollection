@@ -38,6 +38,7 @@ const StudySession: NextPage = () => {
   const [showAnswer, setShowAnswer] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [numCorrect, setNumCorrect] = useState(0);
+  const [numRecorded, setNumRecorded] = useState(0);
   const createStudySession = api.studyRouter.createStudySession.useMutation();
 
   const flashCards = api.flashCardRouter.getFlashCards.useQuery({
@@ -86,7 +87,7 @@ const StudySession: NextPage = () => {
     },
     {
       name: "Time Elapsed",
-      stat: elapsedTime,
+      stat: totalTime,
       image: <ClockIcon className="h-16 w-16 text-brand-offWhite" />,
     },
   ];
@@ -132,9 +133,9 @@ const StudySession: NextPage = () => {
             </dl>
           </div>
         )}
-        <section className="bg-brand-darkGray col-span-4">
+        <section className="bg-brand-darkGray col-span-4 py-1">
           {currentIndex !== flashCards.data?.length && (
-            <div className="grid grid-cols-4 rounded-lg bg-gray-800 p-4 shadow-md transition-all ease-out ">
+            <div className="grid grid-cols-4 rounded-lg bg-gray-800 p-4 shadow-md transition-all ease-out">
               <div className="col-span-1 grid gap-4">
                 <div className="flex flex-col justify-center">
                   {!showAnswer ? (
@@ -167,6 +168,7 @@ const StudySession: NextPage = () => {
                         colorsTime={[5, 0]}
                         onComplete={() => {
                           setCurrentIndex(currentIndex + 1),
+                            setNumRecorded(numRecorded + 1),
                             setShowAnswer(false);
                         }}
                       >
@@ -180,14 +182,11 @@ const StudySession: NextPage = () => {
                     <div className="flex flex-row justify-center gap-8 p-4">
                       <button
                         onClick={() => {
-                          setCurrentIndex(currentIndex + 1),
-                            setShowAnswer(true);
+                          setShowAnswer(true);
                         }}
                         className="m-auto inline-flex items-center rounded-lg bg-brand-actionBlue px-3 py-2 text-center text-sm font-medium text-white hover:bg-brand-subtleBlue focus:outline-none focus:ring-4 focus:ring-blue-300"
                       >
-                        {currentIndex + 1 !== flashCards.data?.length
-                          ? "View Answer"
-                          : "Complete Study Session"}
+                        View Answer
                         <svg
                           aria-hidden="true"
                           className="ml-2 -mr-1 h-4 w-4"
@@ -207,7 +206,10 @@ const StudySession: NextPage = () => {
                     <div className="flex flex-row justify-center gap-8 p-4">
                       <button
                         onClick={() => {
-                          setShowAnswer(false), setNumCorrect(numCorrect + 1);
+                          setCurrentIndex(currentIndex + 1),
+                            setShowAnswer(false),
+                            setNumCorrect(numCorrect + 1),
+                            setNumRecorded(numRecorded + 1);
                         }}
                         className="items-center rounded-lg bg-brand-actionBlue px-3 py-2 text-center text-sm font-medium text-white hover:bg-brand-subtleBlue focus:outline-none focus:ring-4 focus:ring-blue-300"
                       >
@@ -217,7 +219,11 @@ const StudySession: NextPage = () => {
                         />
                       </button>
                       <button
-                        onClick={() => setShowAnswer(false)}
+                        onClick={() => {
+                          setCurrentIndex(currentIndex + 1),
+                            setShowAnswer(false),
+                            setNumRecorded(numRecorded + 1);
+                        }}
                         className="items-center rounded-lg bg-red-600 px-3 py-2 text-center text-sm font-medium text-white hover:bg-red-300 focus:outline-none focus:ring-4 focus:ring-blue-300"
                       >
                         <MinusCircleIcon
@@ -229,39 +235,44 @@ const StudySession: NextPage = () => {
                   )}
                 </div>
               </div>
-              <div className="text-body col-span-3 col-start-3 grid gap-8 align-middle text-xl font-bold tracking-tight text-brand-offWhite">
+              <div className="text-body col-span-4 col-start-3 grid gap-8 py-8 pl-16 text-start text-xl font-bold tracking-tight text-brand-offWhite xl:col-start-2 xl:pl-0 ">
                 <h1 className="text-heading text-3xl">
                   {showAnswer ? "Answer" : `${"Question"}: ${currentIndex + 1}`}
                 </h1>
-                {showAnswer
-                  ? flashCards.data?.at(currentIndex)?.answer
-                  : flashCards.data?.at(currentIndex)?.question}
+                <p className="text-body text-xl">
+                  {showAnswer
+                    ? flashCards.data?.at(currentIndex)?.answer
+                    : flashCards.data?.at(currentIndex)?.question}
+                </p>
               </div>
             </div>
           )}
-          {currentIndex === flashCards.data?.length && (
-            <div>
-              <p>You completed all {flashCards.data?.length} flash cards.</p>
-              <p>You score totaled {numCorrect}.</p>
-              <p>Study time elapsed was {totalTime} seconds.</p>
-              <button
-                onClick={(e) => void handleCreateStudySession(e)}
-                className="bg-brand-dark m-auto mt-4 w-72 rounded-lg bg-brand-actionBlue px-5 py-2.5 text-sm font-medium text-brand-offWhite hover:bg-brand-subtleBlue focus:outline-brand-lightBlue"
-              >
-                Submit Study Session
-              </button>
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  setTotalTime(0);
-                  setCurrentIndex(0);
-                  setShowAnswer(false);
-                  setNumCorrect(0);
-                }}
-                className="bg-brand-dark m-auto mt-4 w-72 rounded-lg bg-brand-actionBlue px-5 py-2.5 text-sm font-medium text-brand-offWhite hover:bg-brand-subtleBlue focus:outline-brand-lightBlue"
-              >
-                Start Over without Submitting
-              </button>
+          {numRecorded === flashCards.data?.length && (
+            <div className="grid grid-cols-4 rounded-lg bg-gray-800 p-4 shadow-md transition-all ease-out">
+              <div className="col-span-4 m-auto grid gap-4 text-brand-offWhite">
+                <p>You completed all {flashCards.data?.length} flash cards.</p>
+                <p>You earned {numCorrect} Apples.</p>
+                <p>Study time elapsed was {totalTime} seconds.</p>
+                <button
+                  onClick={(e) => void handleCreateStudySession(e)}
+                  className="bg-brand-dark m-auto mt-4 w-72 rounded-lg bg-brand-actionBlue px-5 py-2.5 text-sm font-medium text-brand-offWhite hover:bg-brand-subtleBlue focus:outline-brand-lightBlue"
+                >
+                  Submit Study Session
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setTotalTime(0);
+                    setCurrentIndex(0);
+                    setShowAnswer(false);
+                    setNumCorrect(0);
+                    setNumRecorded(0);
+                  }}
+                  className="bg-brand-dark m-auto mt-4 w-72 rounded-lg bg-brand-actionBlue px-5 py-2.5 text-sm font-medium text-brand-offWhite hover:bg-brand-subtleBlue focus:outline-brand-lightBlue"
+                >
+                  Start Over without Submitting
+                </button>
+              </div>
             </div>
           )}
         </section>

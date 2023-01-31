@@ -93,7 +93,7 @@ const FlashCards: NextPage = () => {
             <span className="sr-only">Loading...</span>
           </div>
         )}
-        {flashCards.isError && <p>Error Fetching Card Data :/</p>}
+        {flashCards.error && <p>Error Retreiving Card Data :/</p>}
         {flashCards.data?.length === 0 && (
           <h5 className="mx-auto flex h-1/2 w-full items-center justify-center text-2xl font-bold tracking-tight text-brand-offWhite">
             No Cards Found.

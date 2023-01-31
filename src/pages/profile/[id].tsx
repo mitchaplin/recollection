@@ -21,31 +21,33 @@ const UserProfile: NextPage = () => {
   return (
     <main className="flex h-screen w-screen flex-grow justify-center overflow-y-auto p-8">
       {session.data?.user && (
-        <section className="bg-brand-darkGray grow flex-col justify-center gap-8">
-          <div className="mx-auto py-8 px-4 lg:py-16">
-            <h1 className="font mx-52 mb-10 text-center font-heading text-3xl font-bold text-brand-offWhite">
-              {session?.data?.user?.name}&apos;s Profile
-            </h1>
-            <span className="flex justify-center text-center">
-              <h1 className="font mb-8 truncate pr-1 text-center font-heading text-xl font-bold italic text-brand-offWhite md:mx-52 md:block md:max-w-sm">
-                Email: {session?.data?.user?.email}
+        <section className="bg-brand-darkGray grow flex-col justify-center gap-8 pt-8">
+          <div className="grid grid-cols-4 rounded-lg bg-gray-800 p-4 shadow-md transition-all ease-out">
+            <div className="col-span-4 m-auto mt-4 grid gap-4 text-brand-offWhite">
+              <h1 className="font mb-10 text-center font-heading text-3xl font-bold text-brand-offWhite">
+                {session?.data?.user?.name}&apos;s Profile
               </h1>
-            </span>
-            <span className="flex justify-center text-center">
-              <h1 className="font mb-8 truncate pr-1 text-center font-heading text-xl font-bold italic text-brand-offWhite md:mx-52 md:block md:max-w-sm">
-                Total Collections: {collections.data?.length}
+
+              <h1 className="font mb-8 flex flex-row truncate text-center font-heading text-xl font-bold italic text-brand-offWhite">
+                <p>Email:&nbsp;</p>
+                <p>{session?.data?.user?.email}</p>
               </h1>
-            </span>
-            <span className="flex justify-center text-center">
-              <h1 className="font mb-8 truncate pr-1 text-center font-heading text-xl font-bold italic text-brand-offWhite md:mx-52 md:block md:max-w-sm">
-                Total Apples: 12
+
+              <h1 className="font mb-8 flex flex-row truncate text-center font-heading text-xl font-bold italic text-brand-offWhite">
+                <p>Total Collections:&nbsp;</p>
+                <p>{collections.data?.length}</p>
               </h1>
-            </span>
-            <span className="flex justify-center text-center">
-              <h1 className="font mb-8 truncate pr-1 text-center font-heading text-xl font-bold italic text-brand-offWhite md:mx-52 md:block md:max-w-sm">
-                Total Study {studySessions.data?.length}
+
+              <h1 className="font mb-8 flex flex-row truncate text-center font-heading text-xl font-bold italic text-brand-offWhite">
+                <p>Lifetime Apples:&nbsp;</p>
+                <p>{collections.data?.length}</p>
               </h1>
-            </span>
+
+              <h1 className="font mb-8 flex flex-row truncate text-center font-heading text-xl font-bold italic text-brand-offWhite">
+                <p>Lifetime Study Sessions:&nbsp;</p>
+                <p>{studySessions.data?.length}</p>
+              </h1>
+            </div>
           </div>
         </section>
       )}

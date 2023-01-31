@@ -12,9 +12,8 @@ export const renderRemainingTimer = ({
       <div className="flex justify-center text-2xl text-brand-offWhite">
         {remainingTime}
       </div>
-      <div className="flex justify-center text-brand-offWhite">Answer in</div>
-
-      <div className="flex justify-center text-brand-offWhite">seconds</div>
+      <div className="flex justify-center text-brand-offWhite">Seconds</div>
+      <div className="flex justify-center text-brand-offWhite">Remaining</div>
     </div>
   );
 };
@@ -33,10 +32,8 @@ export const renderNextQuestionTimer = ({
       <div className="flex justify-center text-2xl text-brand-offWhite">
         {remainingTime}
       </div>
-      <div className="flex justify-center text-brand-offWhite">
-        Next Question In
-      </div>
-      <div className="flex justify-center text-brand-offWhite">seconds</div>
+      <div className="flex justify-center text-brand-offWhite">Record</div>
+      <div className="flex justify-center text-brand-offWhite">your score</div>
     </div>
   );
 };

@@ -7,10 +7,12 @@ import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { api } from "../utils/api";
 
+import duration from "dayjs/plugin/duration";
 import fromNow from "dayjs/plugin/relativeTime";
 import { AppleIcon } from "../components/utils/AppleIcon";
 
 dayjs.extend(fromNow);
+dayjs.extend(duration);
 
 export const Dashboard: NextPage = () => {
   const router = useRouter();
@@ -81,7 +83,7 @@ export const Dashboard: NextPage = () => {
         </div>
         {(studySessions?.data?.length || []) > 0 ? (
           <div className="col-span-full mx-auto w-96 xl:w-[50rem]">
-            <div className="text-body pt-24 text-center text-sm text-brand-offWhite">
+            <div className="text-body pt-14 text-center text-sm text-brand-offWhite">
               - Recent Activity -
             </div>
             <ul
@@ -90,6 +92,7 @@ export const Dashboard: NextPage = () => {
             >
               {studySessions.data
                 ?.filter((val, idx, arr) => idx > arr.length - 6)
+                .reverse()
                 .map((ss) => (
                   <li key={ss.id} className="py-4 pt-12">
                     <div className="flex space-x-3">
@@ -114,14 +117,15 @@ export const Dashboard: NextPage = () => {
                           <span
                             onClick={() =>
                               void router.push(
-                                `/collections/edit-collection/${ss.collectionId}/general`
+                                `/collections/edit-collection/${ss.collectionId}/cards`
                               )
                             }
                             className="text-heading text-brand-actionBlue hover:cursor-pointer"
                           >
                             {ss.collectionName}
                           </span>{" "}
-                          was studied for {ss.duration} minutes
+                          was studied for{" "}
+                          {dayjs.duration(ss.duration, "second").humanize()}
                         </p>
                       </div>
                     </div>
