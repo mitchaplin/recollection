@@ -2,14 +2,14 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 export const middleware = (request: NextRequest) => {
-  // const isDeployment = Boolean(process.env.VERCEL_URL)
-  // const cookieName = isDeployment ? "__Secure-next-auth.session-token" : "next-auth.session-token"
-  const cookieName = "next-auth.session-token";
+  const isDeployment = Boolean(process.env.VERCEL_URL);
+  const cookieName = isDeployment
+    ? "__Secure-next-auth.session-token"
+    : "next-auth.session-token";
 
   const requestPathName = request.nextUrl.clone().pathname;
   const hasAuthCookie = request.cookies.get(cookieName);
 
-  // Matching on / here because home page is an upsell, if they already have an account they can be redirected to dashboard
   if (requestPathName === "/") {
     if (hasAuthCookie) {
       const url = request.nextUrl.clone();
