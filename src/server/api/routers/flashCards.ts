@@ -126,7 +126,7 @@ export const flashCardRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ input, ctx }) => {
-      const { id } = await ctx.prisma.flashCard.findFirstOrThrow({
+      await ctx.prisma.flashCard.findFirstOrThrow({
         where: {
           id: input.id,
         },
