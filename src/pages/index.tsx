@@ -17,11 +17,7 @@ const Login: NextPage = () => {
     <main className="h-screen w-screen overflow-y-auto">
       <div
         className="mx-auto flex cursor-pointer flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0"
-        onClick={() =>
-          void signIn("discord", {
-            callbackUrl: "/dashboard",
-          })
-        }
+        onClick={() => void signIn()}
       >
         <a
           href="#"
