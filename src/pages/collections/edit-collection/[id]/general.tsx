@@ -74,7 +74,7 @@ const EditCollection: NextPage = () => {
   if (error)
     return (
       <main className="flex h-screen w-screen flex-grow justify-center overflow-y-auto p-8">
-        <div className="mx-auto flex justify-center py-8 px-4 lg:py-16">
+        <div className="mx-auto flex justify-center py-8 px-4 text-brand-offWhite lg:py-16">
           Error Loading Collection Details
         </div>
       </main>

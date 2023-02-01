@@ -17,7 +17,7 @@ dayjs.extend(duration);
 export const Dashboard: NextPage = () => {
   const router = useRouter();
   const session = useSession();
-
+  const [viewAll, setViewAll] = React.useState(false);
   const routeToCollections = async (e: React.FormEvent) => {
     e.preventDefault();
     await router.push("/collections/list-collections");
@@ -28,7 +28,9 @@ export const Dashboard: NextPage = () => {
   }, [router, session]);
 
   const collections = api.collectionsRouter.getCollections.useQuery({});
+  const currentUser = api.userRouter.getSessionUser.useQuery();
   const studySessions = api.studyRouter.getStudySessions.useQuery();
+
   const stats = [
     {
       name: "Total Collections",
@@ -42,7 +44,7 @@ export const Dashboard: NextPage = () => {
     },
     {
       name: "Apples Earned",
-      stat: session.data?.user.apples,
+      stat: currentUser.data?.apples,
       image: AppleIcon,
     },
   ];
@@ -83,15 +85,19 @@ export const Dashboard: NextPage = () => {
         </div>
         {(studySessions?.data?.length || []) > 0 ? (
           <div className="col-span-full mx-auto w-96 xl:w-[50rem]">
-            <div className="text-body pt-14 text-center text-sm text-brand-offWhite">
-              - Recent Activity -
+            <div className="text-heading pt-10 text-center text-lg text-brand-offWhite">
+              Recent Activity
             </div>
             <ul
               role="list"
               className="divide-y divide-brand-subtleBlue border-b border-brand-subtleBlue"
             >
               {studySessions.data
-                ?.filter((val, idx, arr) => idx > arr.length - 6)
+                ?.filter((val, idx, arr) =>
+                  arr.length < 5
+                    ? arr.length
+                    : idx > arr.length - (viewAll ? arr.length : 5)
+                )
                 .reverse()
                 .map((ss) => (
                   <li key={ss.id} className="py-4 pt-12">
@@ -132,6 +138,11 @@ export const Dashboard: NextPage = () => {
                   </li>
                 ))}
             </ul>
+            <div className="text-body pt-14 text-center text-sm text-brand-offWhite">
+              <button onClick={() => setViewAll(!viewAll)}>
+                {viewAll ? "View Less" : "View All"}
+              </button>
+            </div>
           </div>
         ) : (
           <div className="mx-none col-span-full pt-24 text-center text-brand-offWhite xl:mx-72">

@@ -23,6 +23,8 @@ module.exports = {
       heading: ["Changa One", "sans-serif"],
     },
     animation: {
+      "animate-spin": "spin 1s linear infinite",
+      "animate-pulse": "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
       "fade-in-down": "fade-in-down 0.5s ease-out",
       "fade-in": "fade-in 0.2s ease-out",
       "fade-in-delay": "fade-in-delay 1s ease-out",

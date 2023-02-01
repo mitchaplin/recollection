@@ -89,10 +89,12 @@ export const collectionsRouter = createTRPCRouter({
               },
             ],
           },
+          include: { cards: true },
         });
       } else {
         collections = await ctx.prisma.collection.findMany({
           where: { userId: ctx.session.user.id },
+          include: { cards: true },
         });
       }
       return collections;
@@ -131,22 +133,5 @@ export const collectionsRouter = createTRPCRouter({
       });
 
       return deleteCollection;
-    }),
-
-  getCollectionCardCount: protectedProcedure
-    .input(
-      z
-        .object({
-          collectionId: z.string(),
-        })
-        .required()
-    )
-    .query(async ({ input, ctx }) => {
-      const collectionTotal = await ctx.prisma.collection.count({
-        where: {
-          id: input.collectionId,
-        },
-      });
-      return collectionTotal;
     }),
 });

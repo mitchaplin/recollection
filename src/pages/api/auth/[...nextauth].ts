@@ -11,13 +11,14 @@ export const authOptions: NextAuthOptions = {
   // Include user.id on session
   callbacks: {
     session: async ({ session, user }) => {
-      if (!user.email) throw new Error("No email found on user")
+      if (!user.email) throw new Error("No email found on user");
       const dbUser = await prisma.user.findUnique({
-				where: { email: user.email },
-			})
+        where: { email: user.email },
+        include: { accounts: true },
+      });
 
-      session.user = dbUser as User
-      return session
+      session.user = dbUser as User;
+      return session;
     },
   },
   // Configure one or more authentication providers

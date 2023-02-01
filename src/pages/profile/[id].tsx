@@ -10,9 +10,20 @@ const UserProfile: NextPage = () => {
   //   const contextUtil = api.useContext();
   const session = useSession();
   const router = useRouter();
-
+  const contextUtil = api.useContext();
   const collections = api.collectionsRouter.getCollections.useQuery({});
+  const user = api.userRouter.getSessionUser.useQuery();
+  const deleteUser = api.userRouter.deleteUser.useMutation({});
   const studySessions = api.studyRouter.getStudySessions.useQuery();
+
+  const handleDeleteUser = async (e: React.FormEvent, id: string) => {
+    e.preventDefault();
+    await deleteUser.mutateAsync({
+      id: id,
+    });
+    await contextUtil.userRouter.invalidate();
+    await router.push("/");
+  };
 
   useEffect(() => {
     if (session.status === "loading") return;
@@ -40,13 +51,23 @@ const UserProfile: NextPage = () => {
 
               <h1 className="font mb-8 flex flex-row truncate text-center font-heading text-xl font-bold italic text-brand-offWhite">
                 <p>Lifetime Apples:&nbsp;</p>
-                <p>{collections.data?.length}</p>
+                <p>{user.data?.apples}</p>
               </h1>
 
               <h1 className="font mb-8 flex flex-row truncate text-center font-heading text-xl font-bold italic text-brand-offWhite">
                 <p>Lifetime Study Sessions:&nbsp;</p>
                 <p>{studySessions.data?.length}</p>
               </h1>
+              {/* <div className="flex justify-center">
+                <button
+                  onClick={(e) =>
+                    void handleDeleteUser(e, session.data?.user.id)
+                  }
+                  className="text-brand-darkGray  rounded bg-red-600 py-2 px-4 font-bold text-brand-offWhite"
+                >
+                  Delete User
+                </button>
+              </div> */}
             </div>
           </div>
         </section>

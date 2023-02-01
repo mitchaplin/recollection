@@ -5,7 +5,6 @@ import {
   Square2StackIcon,
   TrashIcon,
 } from "@heroicons/react/24/solid";
-import type { Collection } from "@prisma/client";
 import { type NextPage } from "next";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -20,7 +19,6 @@ import { api } from "../../utils/api";
 
 const Collections: NextPage = () => {
   const session = useSession();
-
   const [searchState, setSearchState] = useState("");
   const [deleteModalState, setDeleteModalState] = useState({
     open: false,
@@ -117,7 +115,7 @@ const Collections: NextPage = () => {
               <p>No Collections Found.</p>
             </h5>
           )}
-          {collections.data?.map((collection: Collection) => {
+          {collections.data?.map((collection) => {
             return (
               <div
                 key={collection.id}
@@ -214,20 +212,25 @@ const Collections: NextPage = () => {
                         Author: {collection.author}
                       </p>
                     </div>
-                    <Link
+                    {/* <Link
+                      disabled={collection.cards.length === 0}
                       href={`/collections/study/${collection.id}`}
                       className="flex items-center justify-center rounded-lg px-3 py-2 text-center text-sm font-medium text-brand-offWhite focus:outline-none"
+                    > */}
+                    <button
+                      disabled={collection.cards.length === 0}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        void router.push(`/collections/study/${collection.id}`);
+                      }}
+                      className="z-50 mt-6 flex justify-center rounded-lg bg-brand-actionBlue px-3 py-2 text-center text-sm font-medium text-brand-offWhite hover:bg-brand-subtleBlue focus:outline-brand-lightBlue disabled:bg-gray-400 disabled:text-gray-700"
                     >
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                        }}
-                        className="z-50 mt-6 flex justify-center rounded-lg bg-brand-actionBlue px-3 py-2 text-center text-sm font-medium text-brand-offWhite hover:bg-brand-subtleBlue  focus:outline-brand-lightBlue"
-                      >
-                        Begin Study
-                        <BookOpenIcon className="ml-3 h-5 w-5 text-brand-offWhite" />
-                      </button>
-                    </Link>
+                      {collection.cards.length === 0
+                        ? "Add cards to study"
+                        : "Begin Study"}
+                      <BookOpenIcon className="ml-3 h-5 w-5 text-brand-offWhite" />
+                    </button>
+                    {/* </Link> */}
                   </div>
                 </div>
               </div>

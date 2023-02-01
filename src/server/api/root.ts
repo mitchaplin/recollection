@@ -2,6 +2,7 @@ import { authRouter } from "./routers/auth";
 import { collectionsRouter } from "./routers/collections";
 import { flashCardRouter } from "./routers/flashCards";
 import { studyRouter } from "./routers/studySessions";
+import { userRouter } from "./routers/user";
 import { createTRPCRouter } from "./trpc";
 
 /**
@@ -14,6 +15,7 @@ export const appRouter = createTRPCRouter({
   collectionsRouter: collectionsRouter,
   studyRouter: studyRouter,
   flashCardRouter: flashCardRouter,
+  userRouter: userRouter,
 });
 
 // export type definition of API

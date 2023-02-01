@@ -5,6 +5,7 @@ import {
   RectangleGroupIcon,
 } from "@heroicons/react/24/solid";
 import { type NextPage } from "next";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
@@ -40,7 +41,8 @@ const StudySession: NextPage = () => {
   const [numCorrect, setNumCorrect] = useState(0);
   const [numRecorded, setNumRecorded] = useState(0);
   const createStudySession = api.studyRouter.createStudySession.useMutation();
-
+  const updateUser = api.userRouter.updateUser.useMutation();
+  const session = useSession();
   const flashCards = api.flashCardRouter.getFlashCards.useQuery({
     collectionId: query.id as string,
   });
@@ -58,14 +60,26 @@ const StudySession: NextPage = () => {
   const contextUtil = api.useContext();
   const displayName = collection?.name as string;
 
+  const handleUpdateUser = async () => {
+    await updateUser.mutateAsync({
+      id: session.data?.user.id as string,
+      apples: numCorrect,
+    });
+    await contextUtil.userRouter.invalidate();
+  };
+
   const handleCreateStudySession = async (e: React.FormEvent) => {
     e.preventDefault();
-    await createStudySession.mutateAsync({
-      duration: elapsedTime,
-      score: numCorrect,
-      collectionName: displayName,
-      collectionId: collection?.id as string,
-    });
+    await createStudySession.mutateAsync(
+      {
+        duration: elapsedTime,
+        score: numCorrect,
+        collectionName: displayName,
+        collectionId: collection?.id as string,
+      },
+      { onSuccess: void handleUpdateUser() }
+    );
+
     await contextUtil.studyRouter.invalidate();
     await router.push("/collections/list-collections");
   };
