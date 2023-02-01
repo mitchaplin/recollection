@@ -3,6 +3,7 @@ import {
   ClockIcon,
   MinusCircleIcon,
   RectangleGroupIcon,
+  Square2StackIcon,
 } from "@heroicons/react/24/solid";
 import { type NextPage } from "next";
 import { useSession } from "next-auth/react";
@@ -249,7 +250,7 @@ const StudySession: NextPage = () => {
                   )}
                 </div>
               </div>
-              <div className="text-body col-span-4 col-start-3 grid gap-8 py-8 pl-16 text-start text-xl font-bold tracking-tight text-brand-offWhite xl:col-start-2 xl:pl-0 ">
+              <div className="text-body col-span-4 col-start-3  grid items-start gap-8 py-8 pl-16 text-start text-xl font-bold tracking-tight text-brand-offWhite xl:col-start-2">
                 <h1 className="text-heading text-3xl">
                   {showAnswer ? "Answer" : `${"Question"}: ${currentIndex + 1}`}
                 </h1>
@@ -263,29 +264,50 @@ const StudySession: NextPage = () => {
           )}
           {numRecorded === flashCards.data?.length && (
             <div className="grid grid-cols-4 rounded-lg bg-gray-800 p-4 shadow-md transition-all ease-out">
-              <div className="col-span-4 m-auto grid gap-4 text-brand-offWhite">
-                <p>You completed all {flashCards.data?.length} flash cards.</p>
-                <p>You earned {numCorrect} Apples.</p>
-                <p>Study time elapsed was {totalTime} seconds.</p>
-                <button
-                  onClick={(e) => void handleCreateStudySession(e)}
-                  className="bg-brand-dark m-auto mt-4 w-72 rounded-lg bg-brand-actionBlue px-5 py-2.5 text-sm font-medium text-brand-offWhite hover:bg-brand-subtleBlue focus:outline-brand-lightBlue"
-                >
-                  Submit Study Session
-                </button>
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setTotalTime(0);
-                    setCurrentIndex(0);
-                    setShowAnswer(false);
-                    setNumCorrect(0);
-                    setNumRecorded(0);
-                  }}
-                  className="bg-brand-dark m-auto mt-4 w-72 rounded-lg bg-brand-actionBlue px-5 py-2.5 text-sm font-medium text-brand-offWhite hover:bg-brand-subtleBlue focus:outline-brand-lightBlue"
-                >
-                  Start Over without Submitting
-                </button>
+              <div className="col-span-4 m-auto grid gap-4 pb-4 text-brand-offWhite">
+                <div className="grid grid-cols-4 gap-4">
+                  <div className="col-span-4 flex flex-row items-center justify-center">
+                    <RectangleGroupIcon className="h-16 w-16 text-brand-offWhite" />
+                    <p className="pl-4">
+                      Collection Name:&nbsp;{collection?.name}
+                    </p>
+                  </div>
+                  <div className="justify-left col-span-3 flex flex-row items-center">
+                    <Square2StackIcon className="h-16 w-16 text-brand-offWhite" />
+                    <p className="pl-4">
+                      Flash Cards Completed:&nbsp;{flashCards.data?.length}
+                    </p>
+                  </div>
+                  <div className="justify-left col-span-3 flex flex-row items-center">
+                    <ClockIcon className="h-16 w-16 text-brand-offWhite" />
+                    <p className="pl-4">Total elapsed time:&nbsp;{totalTime}</p>
+                  </div>
+                  <div className="justify-left col-span-3 flex flex-row items-center">
+                    <div>{AppleIcon}</div>
+                    <p className="pl-4">Apples Earned:&nbsp;{numCorrect}</p>
+                  </div>
+                </div>
+                <div className="flex flex-col lg:flex-row">
+                  <button
+                    onClick={(e) => void handleCreateStudySession(e)}
+                    className="bg-brand-dark m-auto mt-4 flex w-72 justify-center rounded-lg bg-brand-actionBlue px-5 py-2.5 text-sm font-medium text-brand-offWhite hover:bg-brand-subtleBlue focus:outline-brand-lightBlue"
+                  >
+                    Submit Study Session
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setTotalTime(0);
+                      setCurrentIndex(0);
+                      setShowAnswer(false);
+                      setNumCorrect(0);
+                      setNumRecorded(0);
+                    }}
+                    className="bg-brand-dark m-auto mt-4 flex w-72 justify-center rounded-lg bg-brand-actionBlue px-5 py-2.5 text-sm font-medium text-brand-offWhite hover:bg-brand-subtleBlue focus:outline-brand-lightBlue"
+                  >
+                    Start Over without Submitting
+                  </button>
+                </div>
               </div>
             </div>
           )}

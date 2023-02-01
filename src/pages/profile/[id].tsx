@@ -32,9 +32,9 @@ const UserProfile: NextPage = () => {
   return (
     <main className="flex h-screen w-screen flex-grow justify-center overflow-y-auto p-8">
       {session.data?.user && (
-        <section className="bg-brand-darkGray grow flex-col justify-center gap-8 pt-8">
-          <div className="grid grid-cols-4 rounded-lg bg-gray-800 p-4 shadow-md transition-all ease-out">
-            <div className="col-span-4 m-auto mt-4 grid gap-4 text-brand-offWhite">
+        <section className="bg-brand-darkGray gap-8 pt-8">
+          <div className="grid w-fit grid-cols-4 rounded-lg bg-gray-800 p-12 shadow-md transition-all ease-out">
+            <div className="col-span-4 m-auto mt-4 grid gap-4 self-center text-brand-offWhite">
               <h1 className="font mb-10 text-center font-heading text-3xl font-bold text-brand-offWhite">
                 {session?.data?.user?.name}&apos;s Profile
               </h1>

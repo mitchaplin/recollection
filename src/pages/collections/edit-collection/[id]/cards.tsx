@@ -48,8 +48,7 @@ const FlashCards: NextPage = () => {
   const [flashCardModalState, setFlashCardModalState] = useState({
     open: false,
     collectionId: collectionId,
-    isEdit: false,
-    data: { id: "", question: "", answer: "" },
+    data: { id: "", question: "", answer: "", isEdit: false },
   });
 
   const flashCards = api.flashCardRouter.getFlashCards.useQuery(
@@ -75,8 +74,7 @@ const FlashCards: NextPage = () => {
                 setFlashCardModalState({
                   open: true,
                   collectionId: collectionId,
-                  isEdit: false,
-                  data: { id: "", question: "", answer: "" },
+                  data: { id: "", question: "", answer: "", isEdit: false },
                 });
               }}
               className="mb-2 divide-x-4 rounded-lg bg-brand-offWhite px-5 py-2.5 text-sm font-medium text-brand-gray hover:bg-brand-subtleBlue focus:outline-brand-lightBlue"
@@ -157,11 +155,11 @@ const FlashCards: NextPage = () => {
                                         setFlashCardModalState({
                                           open: true,
                                           collectionId: collectionId,
-                                          isEdit: true,
                                           data: {
                                             id: card.id,
                                             question: card.question,
                                             answer: card.answer,
+                                            isEdit: true,
                                           },
                                         });
                                       }}
@@ -212,7 +210,6 @@ const FlashCards: NextPage = () => {
       <FlashCardModal
         collectionId={collectionId}
         open={flashCardModalState.open}
-        isEdit={flashCardModalState.isEdit}
         data={flashCardModalState.data}
         setOpen={() =>
           setFlashCardModalState({

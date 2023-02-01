@@ -116,7 +116,7 @@ const EditCollection: NextPage = () => {
                 />
               </div>
 
-              <div>
+              <div className="sm:col-span-2">
                 <label
                   htmlFor="category"
                   className="mb-2 block text-sm font-medium text-gray-900 dark:text-brand-offWhite"
@@ -140,7 +140,7 @@ const EditCollection: NextPage = () => {
                   <option value="Other">Other</option>
                 </select>
               </div>
-              <div>
+              <div className="sm:col-span-2">
                 <label
                   htmlFor="difficulty"
                   className="mb-2 block text-sm font-medium text-gray-900 dark:text-brand-offWhite"

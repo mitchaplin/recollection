@@ -8,14 +8,12 @@ export const FlashCardModal = ({
   collectionId,
   open,
   setOpen,
-  isEdit,
   data,
 }: {
   collectionId: string;
   open: boolean;
-  isEdit: boolean;
   setOpen: () => void;
-  data: { question: string; answer: string; id: string };
+  data: { question: string; answer: string; id: string; isEdit: boolean };
 }) => {
   const cancelButtonRef = useRef(null);
   const session = useSession();
@@ -23,25 +21,22 @@ export const FlashCardModal = ({
   const contextUtil = api.useContext();
   const createFlashCard = api.flashCardRouter.createFlashCard.useMutation();
   const updateFlashCard = api.flashCardRouter.updateFlashCard.useMutation();
-  const [question, setQuestion] = useState<string>(isEdit ? data.question : "");
-  const [answer, setAnswer] = useState<string>(isEdit ? data.answer : "");
+  const [question, setQuestion] = useState<string>("");
+  const [answer, setAnswer] = useState<string>("");
   useEffect(() => {
-    if (isEdit) {
+    console.log(data.isEdit, "uef");
+    if (data.isEdit) {
       setQuestion(data.question);
       setAnswer(data.answer);
-    }
-  }, [isEdit, data.answer, data.question]);
-
-  useEffect(() => {
-    if (!isEdit) {
+    } else {
       setQuestion("");
       setAnswer("");
     }
-  }, [isEdit]);
+  }, [data.isEdit, data.answer, data.question, data]);
 
   const handleSubmitFlashCard = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (isEdit) {
+    if (data.isEdit) {
       await updateFlashCard.mutateAsync(
         {
           id: data.id,
@@ -74,7 +69,9 @@ export const FlashCardModal = ({
         as="div"
         className="relative z-[99999999999999999]"
         initialFocus={cancelButtonRef}
-        onClose={setOpen}
+        onClose={() => {
+          setOpen();
+        }}
       >
         <Transition.Child
           as={Fragment}
@@ -102,7 +99,7 @@ export const FlashCardModal = ({
               <Dialog.Panel className="relative w-full transform overflow-hidden rounded-lg bg-brand-offWhite px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:w-[50rem]">
                 <div className="mx-auto px-4 py-16">
                   <h1 className="font mb-10 text-center font-heading text-3xl font-bold text-brand-gray">
-                    {isEdit ? "Edit Flash Card" : "Create Flash Card"}
+                    {data.isEdit ? "Edit Flash Card" : "Create Flash Card"}
                   </h1>
                   <form
                     onSubmit={(e) => void handleSubmitFlashCard(e)}
@@ -137,6 +134,7 @@ export const FlashCardModal = ({
                           id="answer"
                           cols={8}
                           value={answer}
+                          required
                           onChange={(e) => setAnswer(e.target.value)}
                           className="dark:focus:border-primary-500 dark:focus:ring-primary-500 block h-44 w-full rounded-lg border border-gray-600 bg-gray-700 p-2.5 text-sm text-brand-offWhite placeholder-gray-400 focus:border-brand-subtleBlue"
                           placeholder="Flash Card Answer"
@@ -145,7 +143,7 @@ export const FlashCardModal = ({
                     </div>
                     <div className="flex justify-center gap-10">
                       <button className="bg-brand-dark mt-4 rounded-lg bg-brand-actionBlue px-5 py-2.5 text-sm font-medium text-brand-offWhite hover:bg-brand-subtleBlue focus:outline-brand-lightBlue">
-                        {isEdit ? "Edit Flash Card" : "Create Flash Card"}
+                        {data.isEdit ? "Edit Flash Card" : "Create Flash Card"}
                       </button>
                     </div>
                   </form>

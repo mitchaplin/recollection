@@ -64,7 +64,7 @@ const CreateCollection: NextPage = () => {
                 />
               </div>
 
-              <div>
+              <div className="sm:col-span-2">
                 <label
                   htmlFor="category"
                   className="mb-2 block text-sm font-medium text-gray-900 dark:text-brand-offWhite"
@@ -88,7 +88,7 @@ const CreateCollection: NextPage = () => {
                   <option value="Other">Other</option>
                 </select>
               </div>
-              <div>
+              <div className="col-span-1 sm:col-span-2">
                 <label
                   htmlFor="difficulty"
                   className="mb-2 block text-sm font-medium text-gray-900 dark:text-brand-offWhite"
