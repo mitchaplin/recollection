@@ -265,8 +265,8 @@ const StudySession: NextPage = () => {
           {numRecorded === flashCards.data?.length && (
             <div className="grid grid-cols-4 rounded-lg bg-gray-800 p-4 shadow-md transition-all ease-out">
               <div className="col-span-4 m-auto grid gap-4 pb-4 text-brand-offWhite">
-                <div className="grid grid-cols-4 gap-4">
-                  <div className="col-span-4 flex flex-row items-center justify-center">
+                <div className="grid grid-cols-4 gap-8">
+                  <div className="justify-left col-span-4 flex flex-row items-center">
                     <RectangleGroupIcon className="h-16 w-16 text-brand-offWhite" />
                     <p className="pl-4">
                       Collection Name:&nbsp;{collection?.name}
