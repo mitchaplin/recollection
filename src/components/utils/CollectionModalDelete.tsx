@@ -3,7 +3,7 @@ import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { Fragment, useRef } from "react";
 import { api } from "../../utils/api";
 
-export const DeleteCollectionModal = ({
+const CollectionModalDelete = ({
   name,
   id,
   open,
@@ -108,3 +108,5 @@ export const DeleteCollectionModal = ({
     </Transition.Root>
   );
 };
+
+export default CollectionModalDelete;

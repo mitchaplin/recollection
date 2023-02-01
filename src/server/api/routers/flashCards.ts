@@ -17,7 +17,7 @@ export const flashCardRouter = createTRPCRouter({
         where: { collectionId: input.collectionId },
         data: { rank: { increment: 1 } },
       });
-      const flashCard = await ctx.prisma.flashCard.create({
+      const fc = await ctx.prisma.flashCard.create({
         data: {
           collectionId: input.collectionId,
           id: id,
@@ -26,7 +26,7 @@ export const flashCardRouter = createTRPCRouter({
           answer: input.answer,
         },
       });
-      return flashCard;
+      return fc;
     }),
 
   updateFlashCard: protectedProcedure

@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import type { DropResult } from "react-beautiful-dnd";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import LoadingSpinner from "../../../../components/LoadingIcon";
-import { DeleteCardModal } from "../../../../components/utils/DeleteCardModal";
+import { CardModalDelete } from "../../../../components/utils/CardModalDelete";
 import { FlashCardModal } from "../../../../components/utils/FlashCardModal";
 import { api } from "../../../../utils/api";
 
@@ -221,7 +221,7 @@ const FlashCards: NextPage = () => {
           })
         }
       />
-      <DeleteCardModal
+      <CardModalDelete
         id={deleteCardModalState.id}
         open={deleteCardModalState.open}
         setOpen={() =>

@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { CategoryBadge } from "../../components/CategoryBadge";
 import LoadingSpinner from "../../components/LoadingIcon";
-import { DeleteCollectionModal } from "../../components/utils/DeleteCollectionModal";
+import CollectionModalDelete from "../../components/utils/CollectionModalDelete";
 
 import { api } from "../../utils/api";
 
@@ -238,7 +238,7 @@ const Collections: NextPage = () => {
           })}
         </div>
       </div>
-      <DeleteCollectionModal
+      <CollectionModalDelete
         name={deleteModalState.name}
         id={deleteModalState.id}
         open={deleteModalState.open}

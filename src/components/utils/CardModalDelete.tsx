@@ -3,7 +3,7 @@ import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { Fragment, useRef } from "react";
 import { api } from "../../utils/api";
 
-export const DeleteCardModal = ({
+export const CardModalDelete = ({
   id,
   open,
   setOpen,
