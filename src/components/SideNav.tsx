@@ -258,13 +258,14 @@ export const SideNav: NextPage = () => {
               <div className="mt-auto">
                 <Link href={`/profile/${session.data?.user?.id}`}>
                   <div className="flex flex-row justify-evenly gap-2 rounded-md bg-brand-gray p-2 text-left hover:bg-gray-700">
+                  {session?.data?.user?.image && (
                     <Image
                       width={150}
                       height={150}
                       src={`${session?.data?.user?.image}`}
                       className="w-12 rounded-full"
                       alt="Avatar"
-                    />
+                    />)}
                     <div className="flex items-center">
                       <h5 className="font-xs text-md font-body text-brand-offWhite">
                         {session.data.user.email}
